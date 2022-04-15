@@ -21,8 +21,9 @@ public class Rezepte {
     private int id;
     private String name;
     @ElementCollection
-    @MapKeyColumn(name="rezepte_menge")
-    @Column(name="food_name")
+    @MapKey(name = "id")
+    @MapKeyColumn(name ="food_name")
+    @Column(name="rezepte_menge")
     @CollectionTable(name = "rezept_mengen_mapping")
     private Map<String,String> food;
 
