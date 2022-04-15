@@ -4,19 +4,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "unvertraeglichkeiten")
 @Entity
 public class Unvertraeglichkeiten {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int uId;
+    private int id;
     private boolean histamine;
     private boolean fructose;
     private boolean lactose;
