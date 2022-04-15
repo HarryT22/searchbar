@@ -22,11 +22,14 @@ public class Rezepte {
     private String name;
     @Transient
     private List<String> mengen;
+    @Transient
+    private List<Food> foods;
     @ElementCollection
-    @MapKeyColumn(name="food_name")
-    @Column(name="rezepte_mengen")
+    @MapKeyColumn(name="foods")
+    @Column(name="mengen")
     @CollectionTable(name = "rezept_mengen_mapping")
-    private Map<String,String> food;
+    private Map<Food,String> food;
+
     private int arbeitszeit;
     private int kochzeit;
     private int gesamtzeit;
