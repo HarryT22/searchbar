@@ -44,7 +44,7 @@ public class Rezepte {
 
 
 
-    public Rezepte(int rezeptId,String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,List<String> mengen){
+    public Rezepte(int rezeptId,String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,List<String> mengen,List<Food> foods){
         this.id = rezeptId;
         this.name = rezeptName;
         this.arbeitszeit = arbeitszeit;
@@ -55,5 +55,6 @@ public class Rezepte {
         this.isVegan = isVegan;
         this.isVegetarisch = isVegetarisch;
         this.mengen = mengen;
+        this.foods = foods;
     }
 }
