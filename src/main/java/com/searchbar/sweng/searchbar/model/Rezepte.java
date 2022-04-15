@@ -20,15 +20,11 @@ public class Rezepte {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    @Transient
-    private List<String> mengen;
-    @Transient
-    private List<Food> foods;
     @ElementCollection
-    @MapKeyColumn(name="foods")
-    @Column(name="mengen")
+    @MapKeyColumn(name="rezepte_menge")
+    @Column(name="food_name")
     @CollectionTable(name = "rezept_mengen_mapping")
-    private Map<Food,String> food;
+    private Map<String,String> food;
 
     private int arbeitszeit;
     private int kochzeit;
@@ -54,7 +50,5 @@ public class Rezepte {
         this.menueart = menueart;
         this.isVegan = isVegan;
         this.isVegetarisch = isVegetarisch;
-        this.mengen = mengen;
-        this.foods = foods;
     }
 }
