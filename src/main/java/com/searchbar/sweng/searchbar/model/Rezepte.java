@@ -40,7 +40,7 @@ public class Rezepte {
 
 
 
-    public Rezepte(int rezeptId,String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,List<String> mengen,List<Food> foods){
+    public Rezepte(int rezeptId,String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,List<String> mengen){
         this.id = rezeptId;
         this.name = rezeptName;
         this.arbeitszeit = arbeitszeit;
