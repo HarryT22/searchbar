@@ -6,8 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Getter
@@ -25,7 +24,6 @@ public class Rezepte {
     @Column(name="rezepte_menge")
     @CollectionTable(name = "rezept_mengen_mapping")
     private Map<String,String> food;
-
     private int arbeitszeit;
     private int kochzeit;
     private int gesamtzeit;
@@ -40,7 +38,7 @@ public class Rezepte {
 
 
 
-    public Rezepte(int rezeptId,String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,List<String> mengen){
+    public Rezepte(int rezeptId,String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,Map<String,String> food){
         this.id = rezeptId;
         this.name = rezeptName;
         this.arbeitszeit = arbeitszeit;
@@ -50,5 +48,6 @@ public class Rezepte {
         this.menueart = menueart;
         this.isVegan = isVegan;
         this.isVegetarisch = isVegetarisch;
+        this.food = food;
     }
 }
