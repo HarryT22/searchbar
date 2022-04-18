@@ -19,10 +19,11 @@ public class PersistenceTest {
     @Test
     public void findAllShouldWork(){
         List<Rezepte> rezepte = rezepteRepository.findAll("Fleisch");
-        assertEquals(1, rezepte.get(0).getId());
-        assertEquals(2, rezepte.get(1).getId());
-        assertEquals(3, rezepte.get(2).getId());
-        assertEquals(4, rezepte.get(3).getId());
-        assertEquals(5, rezepte.get(4).getId());
+        assertEquals(1,rezepte.get(0).getId());
+        assertEquals(2,rezepte.get(1).getId());
+        assertEquals(3,rezepte.get(2).getId());
+        assertEquals(4,rezepte.get(3).getId());
+        assertEquals(5,rezepte.get(4).getId());
+        assertEquals(6,rezepte.get(5).getId());
     }
 }
