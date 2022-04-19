@@ -29,10 +29,10 @@ public class RezepteService {
                 if(fructose && !r.getUnvertraeglichkeiten().isFructose()){
                     rezepte.remove(r);
                 }
-                if(fructose && !r.getUnvertraeglichkeiten().isLactose()){
+                if(lactose && !r.getUnvertraeglichkeiten().isLactose()){
                     rezepte.remove(r);
                 }
-                if(fructose && !r.getUnvertraeglichkeiten().isHistamine()){
+                if(histamine && !r.getUnvertraeglichkeiten().isHistamine()){
                     rezepte.remove(r);
                 }
             }

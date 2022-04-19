@@ -50,7 +50,3 @@ INSERT INTO rezept_mengen_mapping(rezepte_id,food_name,rezepte_menge) VALUES (6,
 INSERT INTO rezept_mengen_mapping(rezepte_id,food_name,rezepte_menge) VALUES (6,"Parmesan, gerieben","100 Gramm");
 INSERT INTO rezept_mengen_mapping(rezepte_id,food_name,rezepte_menge) VALUES (6,"Cornichons, fein gehackt","50 Gramm");
 INSERT INTO rezept_mengen_mapping(rezepte_id,food_name,rezepte_menge) VALUES (6,"Toastbrot","2 Scheiben");
-
-
-
-

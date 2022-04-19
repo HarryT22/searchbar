@@ -38,8 +38,7 @@ public class Rezepte {
 
 
 
-    public Rezepte(int rezeptId,String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,Map<String,String> food){
-        this.id = rezeptId;
+    public Rezepte(String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,Map<String,String> food,Unvertraeglichkeiten uv){
         this.name = rezeptName;
         this.arbeitszeit = arbeitszeit;
         this.kochzeit = kochzeit;
@@ -49,5 +48,6 @@ public class Rezepte {
         this.isVegan = isVegan;
         this.isVegetarisch = isVegetarisch;
         this.food = food;
+        this.unvertraeglichkeiten = uv;
     }
 }
