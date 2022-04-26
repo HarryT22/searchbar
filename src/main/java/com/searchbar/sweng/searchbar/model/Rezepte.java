@@ -33,12 +33,13 @@ public class Rezepte {
     private boolean isVegan;
     private boolean isVegetarisch;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "unvertraeglichkeiten_id",referencedColumnName = "id")
+    @JoinColumn(name = "unvertraeglichkeiten_id")
     Unvertraeglichkeiten unvertraeglichkeiten;
 
 
 
-    public Rezepte(String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,Map<String,String> food,Unvertraeglichkeiten uv){
+    public Rezepte(int id,String rezeptName, int arbeitszeit, int kochzeit,int gesamtzeit, int portionen, Menueart menueart, boolean isVegan, boolean isVegetarisch,Map<String,String> food,Unvertraeglichkeiten uv){
+        this.id = id;
         this.name = rezeptName;
         this.arbeitszeit = arbeitszeit;
         this.kochzeit = kochzeit;

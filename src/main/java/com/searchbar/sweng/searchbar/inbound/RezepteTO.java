@@ -36,5 +36,6 @@ public class RezepteTO {
         this.isVegan = rezept.isVegan();
         this.isVegetarisch = rezept.isVegetarisch();
         this.food = rezept.getFood();
+        this.unvertraeglichkeiten = rezept.getUnvertraeglichkeiten();
     }
 }

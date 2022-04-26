@@ -11,9 +11,8 @@ public class CustomRezepteRepositoryImpl implements CustomRezepteRepository {
     private EntityManager em;
     @Override
     public List<Rezepte> findAll(String name){
-        List results = em.createQuery("SELECT r FROM Rezepte r WHERE r.name LIKE :rezeptName ORDER BY r.name")
+        return (List<Rezepte>) em.createNativeQuery("SELECT r FROM Rezepte r WHERE r.name LIKE :rezeptName ORDER BY r.name")
                 .setParameter("rezeptName",name)
                 .getResultList();
-        return results;
     }
 }
