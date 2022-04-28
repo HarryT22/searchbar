@@ -20,6 +20,7 @@ public class RezepteController {
     }
 
     @GetMapping("/free/{name}/{f}/{l}/{h}/{vegan}/{vegetarisch}")
+    @ResponseStatus()
     public List<RezepteTO> listNormal(@PathVariable("name") String name, @PathVariable("f") boolean fructose, @PathVariable("l") boolean lactose, @PathVariable("h") boolean histamine, @PathVariable("vegan") boolean isVegan, @PathVariable("vegetarisch") boolean isVegetarisch){
         List<RezepteTO> results = null;
         List<Rezepte> res = rezepteService.listNormal(name,fructose,lactose,histamine,isVegan,isVegetarisch);

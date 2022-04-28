@@ -1,5 +1,6 @@
 package com.searchbar.sweng.searchbar.inbound;
 
+import com.searchbar.sweng.searchbar.model.Food;
 import com.searchbar.sweng.searchbar.model.Menueart;
 import com.searchbar.sweng.searchbar.model.Rezepte;
 import com.searchbar.sweng.searchbar.model.Unvertraeglichkeiten;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Map;
 @Getter
 @Setter
@@ -15,7 +17,7 @@ import java.util.Map;
 public class RezepteTO {
     private int id;
     private String name;
-    private Map<String,String> food;
+    private List<Food> foods;
     private int arbeitszeit;
     private int kochzeit;
     private int gesamtzeit;
@@ -35,7 +37,7 @@ public class RezepteTO {
         this.menueart = rezept.getMenueart();
         this.isVegan = rezept.isVegan();
         this.isVegetarisch = rezept.isVegetarisch();
-        this.food = rezept.getFood();
+        this.foods = rezept.getFoods();
         this.unvertraeglichkeiten = rezept.getUnvertraeglichkeiten();
     }
 }

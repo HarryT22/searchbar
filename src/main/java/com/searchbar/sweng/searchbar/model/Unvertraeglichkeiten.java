@@ -19,6 +19,12 @@ public class Unvertraeglichkeiten {
     private boolean fructose;
     private boolean lactose;
 
+    public Unvertraeglichkeiten(boolean histamine, boolean fructose, boolean lactose) {
+        this.histamine = histamine;
+        this.fructose = fructose;
+        this.lactose = lactose;
+    }
+
     public Unvertraeglichkeiten(int id,boolean histamine, boolean fructose, boolean lactose) {
         this.id = id;
         this.histamine = histamine;

@@ -12,7 +12,7 @@ public class CustomRezepteRepositoryImpl implements CustomRezepteRepository {
     @Override
     public List<Rezepte> findAll(String name){
         return (List<Rezepte>) em.createNativeQuery("SELECT r FROM Rezepte r WHERE r.name LIKE :rezeptName ORDER BY r.name")
-                .setParameter("rezeptName",name)
-                .getResultList();
-    }
+               .setParameter("rezeptName",name)
+              .getResultList();
+   }
 }
