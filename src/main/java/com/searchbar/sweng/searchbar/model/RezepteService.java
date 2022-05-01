@@ -12,39 +12,62 @@ public class RezepteService {
     private RezepteRepository rezepteRepository;
 
     @Autowired
-    public RezepteService(RezepteRepository rezepteRepository){
+    public RezepteService(RezepteRepository rezepteRepository) {
         this.rezepteRepository = rezepteRepository;
     }
 
-    public List<Rezepte> listNormal(String name,boolean fructose,boolean lactose,boolean histamine,boolean isVegan,boolean isVegetarisch){
-        List<Rezepte> rezepte = rezepteRepository.findAll(name);
-        if(!rezepte.isEmpty()){
-            for(Rezepte r: rezepte){
-                if(isVegan && !r.isVegan()){
+    public List<Rezepte> listNormal(String name, boolean fructose, boolean lactose, boolean histamine, boolean isVegan,
+                                    boolean isVegetarisch, int minK, int maxK, int minP, int maxP) {
+        List<Rezepte> rezepte = rezepteRepository.findByName(name);
+        if (!rezepte.isEmpty()) {
+            for (Rezepte r : rezepte) {
+                if (isVegan && !r.isVegan()) {
                     rezepte.remove(r);
+                    continue;
                 }
-                if(isVegetarisch && !r.isVegetarisch()){
+                if (isVegetarisch && !r.isVegetarisch()) {
                     rezepte.remove(r);
+                    continue;
                 }
-                if(fructose && !r.getUnvertraeglichkeiten().isFructose()){
+                if (fructose && !r.getUnvertraeglichkeiten().isFructose()) {
                     rezepte.remove(r);
+                    continue;
                 }
-                if(lactose && !r.getUnvertraeglichkeiten().isLactose()){
+                if (lactose && !r.getUnvertraeglichkeiten().isLactose()) {
                     rezepte.remove(r);
+                    continue;
                 }
-                if(histamine && !r.getUnvertraeglichkeiten().isHistamine()){
+                if (histamine && !r.getUnvertraeglichkeiten().isHistamine()) {
                     rezepte.remove(r);
+                    continue;
+                }
+                if (minK >= r.getCalories()) {
+                    rezepte.remove(r);
+                    continue;
+                }
+                if (maxK <= r.getCalories()) {
+                    rezepte.remove(r);
+                    continue;
+                }
+                if (minP >= r.getProteins()) {
+                    rezepte.remove(r);
+                    continue;
+                }
+                if (maxP <= r.getProteins()) {
+                    rezepte.remove(r);
+                    continue;
                 }
             }
-            if(rezepte.size()>=5) {
+            if (rezepte.size() >= 5) {
                 return rezepte.stream().limit(5).collect(Collectors.toList());
             }
-            if(rezepte.isEmpty()){
+            if (rezepte.isEmpty()) {
                 throw new NoSuchRecipieException("Ein Rezept mit diesen Filtern existiert nicht");
             }
             return rezepte;
-        }else{
-            throw new NoSuchRecipieException("Ein Rezept mit so einem Namen existiert nicht.");
+        } else {
+            throw new NoSuchRecipieException("Ein solches Rezept existiert nicht.");
         }
     }
 }
+

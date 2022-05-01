@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +24,9 @@ public class RezepteTO {
     private Menueart menueart;
     private boolean isVegan;
     private boolean isVegetarisch;
-    Unvertraeglichkeiten unvertraeglichkeiten;
+    private Unvertraeglichkeiten unvertraeglichkeiten;
+    private int kalorien;
+    private int proteine;
 
     public RezepteTO(Rezepte rezept){
         this.id = rezept.getId();
@@ -39,5 +40,7 @@ public class RezepteTO {
         this.isVegetarisch = rezept.isVegetarisch();
         this.foods = rezept.getFoods();
         this.unvertraeglichkeiten = rezept.getUnvertraeglichkeiten();
+        this.kalorien = rezept.getCalories();
+        this.proteine = rezept.getProteins();
     }
 }
