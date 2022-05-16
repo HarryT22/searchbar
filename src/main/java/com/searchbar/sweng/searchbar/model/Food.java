@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -21,13 +20,6 @@ public class Food {
     private int kalorien;
     private String menge;
 
-    public Food(int id,String name, int proteine, int kalorien,String menge){
-        this.id = id;
-        this.name = name;
-        this.proteine = proteine;
-        this.kalorien = kalorien;
-        this.menge = menge;
-    }
     public Food(String name, int proteine, int kalorien, String menge){
         this.name = name;
         this.proteine = proteine;

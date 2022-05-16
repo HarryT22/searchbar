@@ -24,11 +24,4 @@ public class Unvertraeglichkeiten {
         this.fructose = fructose;
         this.lactose = lactose;
     }
-
-    public Unvertraeglichkeiten(int id,boolean histamine, boolean fructose, boolean lactose) {
-        this.id = id;
-        this.histamine = histamine;
-        this.fructose = fructose;
-        this.lactose = lactose;
-    }
 }

@@ -15,12 +15,12 @@ INSERT INTO food(name,proteine,kalorien,menge) VALUES ('Oktopus',200,400,'200 g'
 INSERT INTO food(name,proteine,kalorien,menge) VALUES ('Reis',200,400,'200 g');
 INSERT INTO food(name,proteine,kalorien,menge) VALUES ('Kartoffel',200,400,'200 g');
 
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Bleisch A',25,15,6,'MITTAGESSEN',FALSE,FALSE,1);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Bleisch B',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Bleisch C',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Bleisch D',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Bleisch E',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Bleisch F',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
+INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Fleisch A',25,15,6,'MITTAGESSEN',FALSE,FALSE,1);
+INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Fleisch B',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
+INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Fleisch C',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
+INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Fleisch D',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
+INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Fleisch E',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
+INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id) VALUES ('Fleisch F',25,15,6,'MITTAGESSEN',FALSE,FALSE,2);
 
 INSERT INTO rezepte_foods(rezepte_id,food_id) VALUES (1,1);
 INSERT INTO rezepte_foods(rezepte_id,food_id) VALUES (2,2);

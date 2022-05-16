@@ -1,4 +1,4 @@
-package com.searchbar.sweng.searchbar.model;
+package com.searchbar.sweng.searchbar.model.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
