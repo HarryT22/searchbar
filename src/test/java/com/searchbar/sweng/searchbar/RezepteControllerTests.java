@@ -1,6 +1,7 @@
 package com.searchbar.sweng.searchbar;
 
 import com.searchbar.sweng.searchbar.inbound.RezepteController;
+import com.searchbar.sweng.searchbar.inbound.security.JwtValidator;
 import com.searchbar.sweng.searchbar.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,14 +9,17 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.client.ExpectedCount.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,6 +32,9 @@ public class RezepteControllerTests {
 
     @MockBean
     private RezepteService rezepteService;
+
+    @MockBean
+    private JwtValidator jwtValidator;
 
     private Unvertraeglichkeiten uv;
     private Unvertraeglichkeiten uv2;
@@ -57,6 +64,8 @@ public class RezepteControllerTests {
     private Food f5;
     private Food f6;
 
+    private final String AUTH_HEADER = "Bearer ANY-JWT-STRING";;
+    private final String TEST_USER_EMAIL = "harry@hacker.de";
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -95,6 +104,15 @@ public class RezepteControllerTests {
         this.r5 = new Rezepte( "Fleisch E", 4, 2, 2, Menueart.FRÜHSTÜCK, false, false, foods5, uv5);
         this.r6 = new Rezepte( "Fleisch F", 4, 2, 2, Menueart.FRÜHSTÜCK, false, false, foods6, uv6);
 
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
+                .password("***")
+                .authorities(Role.NORMAL.getAuthority())
+                .build();
+
+        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
+        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
+        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
+        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
     }
 
     @Test
@@ -103,7 +121,7 @@ public class RezepteControllerTests {
         test.add(r);
         given(this.rezepteService.listNormal("Fleisch", false, false, false,
                 false, false, 0, 1000, 0, 1000)).willReturn(test);
-        this.mvc.perform(get("/rest/searchbar/free/{name}/{f}/{l}/{h}/{vegan}/{vegetarisch}/{mink}/{maxk}/{minp}/{maxp}",
+        this.mvc.perform(get("/rest/searchbar/{name}/{f}/{l}/{h}/{vegan}/{vegetarisch}/{mink}/{maxk}/{minp}/{maxp}",
                         "Fleisch", false, false, false, false, false, 0, 1000, 0, 1000))
                 .andDo(print())
                 .andExpect(status().isOk())
