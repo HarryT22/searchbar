@@ -1,7 +1,9 @@
 package com.searchbar.sweng.searchbar.inbound;
 
 
+import com.searchbar.sweng.searchbar.inbound.security.JwtValidator;
 import com.searchbar.sweng.searchbar.model.*;
+import io.jsonwebtoken.Jwt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,15 @@ public class RezepteController {
 
     private RezepteService rezepteService;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private JwtValidator jwtValidator;
 
     @Autowired
-    public RezepteController(RezepteService rezepteService) {
+    public RezepteController(RezepteService rezepteService, JwtValidator jwtValidator) {
         this.rezepteService = rezepteService;
+        this.jwtValidator = jwtValidator;
     }
 
-    @PreAuthorize("hasAuthority('NORMAL')")
+    @PreAuthorize("hasAnyRole('NORMAL','PREMIUM','ADMIN')")
     @GetMapping("/{name}/{f}/{l}/{h}/{vegan}/{vegetarisch}/{mink}/{maxk}/{minp}/{maxp}")
     public List<RezepteTO> listNormal(@PathVariable("name") String name, @PathVariable("f") boolean fructose, @PathVariable("l") boolean lactose,
                                       @PathVariable("h") boolean histamine, @PathVariable("vegan") boolean isVegan, @PathVariable("vegetarisch") boolean isVegetarisch,
