@@ -1,10 +1,12 @@
 #RabbitMQ Configuration
 spring:
   cloud:
+    function:
+      definition: EventConsumer
     stream:
       bindings:
         eventConsumer-in-0:
-          destination: sweng.events
+          destination: test.sweng
           binder: cloud_rabbit
       binders:
         cloud_rabbit:
@@ -12,15 +14,15 @@ spring:
           environment:
             spring:
               rabbitmq:
-                host: cow.rmq2.cloudamqp.com
+                host: rabbitmq.team12.svc.cluster.local
                 port: 5672
-                username: ghkcurap
-                password: 6a2CWs9YHE0cRhinwBdu2QRJaBXFiwmS
-                virtual-host: ghkcurap
+                username: admin
+                password: password
+                virtual-host: test
 #repeat the rabbitmq credentials as follows when actuator health checks are active:
   rabbitmq:
-    host: cow.rmq2.cloudamqp.com
+    host: rabbitmq.team12.svc.cluster.local
     port: 5672
-    username: ghkcurap
-    password: 6a2CWs9YHE0cRhinwBdu2QRJaBXFiwmS
-    virtual-host: ghkcurap
+    username: admin
+    password: password
+    virtual-host: test
