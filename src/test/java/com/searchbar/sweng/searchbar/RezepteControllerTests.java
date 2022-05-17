@@ -69,6 +69,16 @@ public class RezepteControllerTests {
 
     @BeforeEach
     public void setUp() throws Exception {
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
+                .password("***")
+                .authorities(Role.ADMIN.getAuthority())
+                .build();
+
+        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
+        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
+        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
+        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
+
         this.uv = new Unvertraeglichkeiten(false, false, false);
         this.uv2 = new Unvertraeglichkeiten(true, true, true);
         this.uv3 = new Unvertraeglichkeiten(false, false, false);
@@ -103,16 +113,6 @@ public class RezepteControllerTests {
         this.r4 = new Rezepte( "Fleisch D", 4, 2, 2, Menueart.FRÜHSTÜCK, false, false, foods4, uv4);
         this.r5 = new Rezepte( "Fleisch E", 4, 2, 2, Menueart.FRÜHSTÜCK, false, false, foods5, uv5);
         this.r6 = new Rezepte( "Fleisch F", 4, 2, 2, Menueart.FRÜHSTÜCK, false, false, foods6, uv6);
-
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
-                .password("***")
-                .authorities(Role.NORMAL.getAuthority())
-                .build();
-
-        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
-        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
-        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
-        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
     }
 
     @Test
@@ -122,7 +122,8 @@ public class RezepteControllerTests {
         given(this.rezepteService.listNormal("Fleisch", false, false, false,
                 false, false, 0, 1000, 0, 1000)).willReturn(test);
         this.mvc.perform(get("/rest/searchbar/{name}/{f}/{l}/{h}/{vegan}/{vegetarisch}/{mink}/{maxk}/{minp}/{maxp}",
-                        "Fleisch", false, false, false, false, false, 0, 1000, 0, 1000))
+                        "Fleisch", false, false, false, false, false, 0, 1000, 0, 1000)
+                        .header("Authorization",this.AUTH_HEADER))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{'id':0,'name':'Fleisch A','foods':[{'id':0,'name':'Fleisch','proteine':200,'kalorien':200,'menge':'400Gramm'}],'arbeitszeit':4,'kochzeit':2,'portionen':2,'menueart':'FRÜHSTÜCK','unvertraeglichkeiten':{'id':0,'histamine':false,'fructose':false,'lactose':false},'kalorien':200,'proteine':200,'vegetarisch':false,'vegan':false}]"));

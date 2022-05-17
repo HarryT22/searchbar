@@ -29,7 +29,7 @@ public class RezepteController {
         this.jwtValidator = jwtValidator;
     }
 
-    @PreAuthorize("hasAnyRole('NORMAL','PREMIUM','ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{name}/{f}/{l}/{h}/{vegan}/{vegetarisch}/{mink}/{maxk}/{minp}/{maxp}")
     public List<RezepteTO> listNormal(@PathVariable("name") String name, @PathVariable("f") boolean fructose, @PathVariable("l") boolean lactose,
                                       @PathVariable("h") boolean histamine, @PathVariable("vegan") boolean isVegan, @PathVariable("vegetarisch") boolean isVegetarisch,
