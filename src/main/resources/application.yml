@@ -4,8 +4,9 @@ spring:
     function:
       definition: EventConsumer
     stream:
+      source: eventPublisher
       bindings:
-        eventConsumer-in-0:
+        eventPublisher-out-0:
           destination: test.sweng
           binder: cloud_rabbit
       binders:
@@ -18,11 +19,11 @@ spring:
                 port: 5672
                 username: admin
                 password: password
-                virtual-host: test
-#repeat the rabbitmq credentials as follows when actuator health checks are active:
+                virtual-host: harrytest
+  #repeat the rabbitmq credentials as follows when actuator health checks are active:
   rabbitmq:
     host: rabbitmq.team12.svc.cluster.local
     port: 5672
     username: admin
     password: password
-    virtual-host: test
+    virtual-host: harrytest

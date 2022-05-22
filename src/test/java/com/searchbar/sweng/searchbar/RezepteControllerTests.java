@@ -119,7 +119,7 @@ public class RezepteControllerTests {
     public void listEins() throws Exception {
         List<Rezepte> test = new ArrayList<>();
         test.add(r);
-        given(this.rezepteService.listNormal("Fleisch", false, false, false,
+        given(this.rezepteService.listNormal("NORMAL","Fleisch", false, false, false,
                 false, false, 0, 1000, 0, 1000)).willReturn(test);
         this.mvc.perform(get("/rest/searchbar/{name}/{f}/{l}/{h}/{vegan}/{vegetarisch}/{mink}/{maxk}/{minp}/{maxp}",
                         "Fleisch", false, false, false, false, false, 0, 1000, 0, 1000)
@@ -127,7 +127,7 @@ public class RezepteControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{'id':0,'name':'Fleisch A','foods':[{'id':0,'name':'Fleisch','proteine':200,'kalorien':200,'menge':'400Gramm'}],'arbeitszeit':4,'kochzeit':2,'portionen':2,'menueart':'FRÜHSTÜCK','unvertraeglichkeiten':{'id':0,'histamine':false,'fructose':false,'lactose':false},'kalorien':200,'proteine':200,'vegetarisch':false,'vegan':false}]"));
-        verify(rezepteService, Mockito.times(1)).listNormal("Fleisch", false, false, false, false, false, 0, 1000, 0, 1000);
+        verify(rezepteService, Mockito.times(1)).listNormal("NORMAL","Fleisch", false, false, false, false, false, 0, 1000, 0, 1000);
     }
    /*
     @Test

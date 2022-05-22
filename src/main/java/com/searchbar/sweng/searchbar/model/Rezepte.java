@@ -35,10 +35,11 @@ public class Rezepte {
     private Unvertraeglichkeiten unvertraeglichkeiten;
     @Lob
     private String image;
+    @Version
+    private int version;
 
-    public int getGesamtZeit(){
-        int gesamtZeit = getArbeitszeit()+getKochzeit();
-        return gesamtZeit;
+    public int getGesamtzeit(){
+        return getArbeitszeit()+getKochzeit();
     }
     public int getCalories(){
         int sum = 0;

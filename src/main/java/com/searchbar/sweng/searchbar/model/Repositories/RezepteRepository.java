@@ -11,4 +11,5 @@ public interface RezepteRepository {
     Rezepte save(Rezepte r);
     Optional<Rezepte> findById(int id);
     void delete(Rezepte r);
+    Rezepte findFirstByOrderByIdDesc();
 }

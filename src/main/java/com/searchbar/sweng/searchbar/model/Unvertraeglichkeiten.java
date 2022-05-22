@@ -18,6 +18,8 @@ public class Unvertraeglichkeiten {
     private boolean histamine;
     private boolean fructose;
     private boolean lactose;
+    @Version
+    private int version;
 
     public Unvertraeglichkeiten(boolean histamine, boolean fructose, boolean lactose) {
         this.histamine = histamine;

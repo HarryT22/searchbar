@@ -19,6 +19,9 @@ public class Food {
     private int proteine;
     private int kalorien;
     private String menge;
+    @Version
+    private int version;
+
 
     public Food(String name, int proteine, int kalorien, String menge){
         this.name = name;

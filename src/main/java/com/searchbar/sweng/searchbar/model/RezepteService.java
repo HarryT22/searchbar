@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+@Transactional
 @Service
 public class RezepteService {
 
@@ -31,7 +32,7 @@ public class RezepteService {
         this.rezepteRepository = rezepteRepository;
     }
 
-    public List<Rezepte> listNormal(String name, boolean fructose, boolean lactose, boolean histamine, boolean isVegan,
+    public List<Rezepte> listNormal(String role,String name, boolean fructose, boolean lactose, boolean histamine, boolean isVegan,
                                     boolean isVegetarisch, int minK, int maxK, int minP, int maxP) {
         List<Rezepte> rezepte = rezepteRepository.findByName(name);
         if (!rezepte.isEmpty()) {
@@ -72,8 +73,15 @@ public class RezepteService {
                     rezepte.remove(r);
                 }
             }
-            if (rezepte.size() >= 5) {
-                return rezepte.stream().limit(5).collect(Collectors.toList());
+            if(role.equals("USER")) {
+                if (rezepte.size() >= 5) {
+                    return rezepte.stream().limit(5).collect(Collectors.toList());
+                }
+            }
+            if(role.equals("ADMIN")||role.equals("PREMIUM")){
+                if (rezepte.size() >= 10) {
+                    return rezepte.stream().limit(10).collect(Collectors.toList());
+                }
             }
             if (rezepte.isEmpty()) {
                 throw new NoSuchRecipieException("Ein Rezept mit diesen Filtern existiert nicht");
@@ -110,7 +118,6 @@ public class RezepteService {
         r.setVegan(isVegan);
         r.setVegetarisch(isVegetarisch);
         r.setUnvertraeglichkeiten(uv);
-        rezepteRepository.save(r);
     }
 
     public void addFoodToRezept(String name, int proteine, int kalorien, String menge, int id) {
@@ -121,7 +128,6 @@ public class RezepteService {
             List<Food> fl = r.getFoods();
             fl.add(f);
             r.setFoods(fl);
-            rezepteRepository.save(r);
         } else {
             throw new NoSuchRecipieException("No Recipie found");
         }

@@ -42,7 +42,7 @@ public class RezepteTO {
         this.isVegetarisch = rezept.isVegetarisch();
         this.foods = rezept.getFoods();
         this.unvertraeglichkeiten = rezept.getUnvertraeglichkeiten();
-        this.gesamtzeit = rezept.getGesamtZeit();
+        this.gesamtzeit = rezept.getGesamtzeit();
         this.kalorien = rezept.getCalories();
         this.proteine = rezept.getProteins();
         this.image = rezept.getImage();

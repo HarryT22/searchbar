@@ -31,40 +31,23 @@ public class RezeptAddedEvent {
     @Lob
     private String image;
 
-    public int getGesamtZeit(){
-        int gesamtZeit = getArbeitszeit()+getKochzeit();
-        return gesamtZeit;
-    }
-    public int getCalories(){
-        int sum = 0;
-        for(Food f:this.foods){
-            sum = sum+f.getKalorien();
-        }
-        return sum;
-    }
-
-    public int getProteins(){
-        int sum = 0;
-        for(Food f:this.foods){
-            sum = sum+f.getProteine();
-        }
-        return sum;
-    }
-
-    public RezeptAddedEvent(int id,String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
-                   boolean isVegan, boolean isVegetarisch,List<Food> foods,Unvertraeglichkeiten uv,String image){
-        this.id = id;
-        this.name = rezeptName;
-        this.arbeitszeit = arbeitszeit;
-        this.kochzeit = kochzeit;
-        this.portionen = portionen;
-        this.menueart = menueart;
-        this.isVegan = isVegan;
-        this.isVegetarisch = isVegetarisch;
-        this.foods = foods;
-        this.unvertraeglichkeiten = uv;
-        this.image = image;
-    }
+//    public RezeptAddedEvent(int id,String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
+//                   boolean isVegan, boolean isVegetarisch,List<Food> foods,Unvertraeglichkeiten uv,String image){
+//        this.id = id;
+//        this.name = rezeptName;
+//        this.arbeitszeit = arbeitszeit;
+//        this.kochzeit = kochzeit;
+//        this.portionen = portionen;
+//        this.menueart = menueart;
+//        this.isVegan = isVegan;
+//        this.isVegetarisch = isVegetarisch;
+//        this.foods = foods;
+//        this.unvertraeglichkeiten = uv;
+//        this.gesamtzeit = arbeitszeit+kochzeit;
+//        this.kalorien = getCalories();
+//        this.proteine = getProteins();
+//        this.image = image;
+//    }
     public RezeptAddedEvent(Rezepte rezept){
         this.id = rezept.getId();
         this.name = rezept.getName();
@@ -76,7 +59,7 @@ public class RezeptAddedEvent {
         this.isVegetarisch = rezept.isVegetarisch();
         this.foods = rezept.getFoods();
         this.unvertraeglichkeiten = rezept.getUnvertraeglichkeiten();
-        this.gesamtzeit = rezept.getGesamtZeit();
+        this.gesamtzeit = rezept.getGesamtzeit();
         this.kalorien = rezept.getCalories();
         this.proteine = rezept.getProteins();
         this.image = rezept.getImage();
