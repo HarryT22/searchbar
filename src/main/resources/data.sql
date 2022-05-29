@@ -15,12 +15,12 @@ INSERT INTO food(name,proteine,kalorien,menge,version) VALUES ('Oktopus',200,400
 INSERT INTO food(name,proteine,kalorien,menge,version) VALUES ('Reis',200,400,'200 g',0);
 INSERT INTO food(name,proteine,kalorien,menge,version) VALUES ('Kartoffel',200,400,'200 g',0);
 
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Bleisch A',25,15,6,'MITTAGESSEN',FALSE,FALSE,1,0);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Bleisch B',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Bleisch C',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Bleisch D',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Bleisch E',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
-INSERT INTO rezepte(name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Bleisch F',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Bleisch A',25,15,6,'MITTAGESSEN',FALSE,FALSE,1,0);
+INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Bleisch B',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Bleisch C',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Bleisch D',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Bleisch E',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Bleisch F',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
 
 INSERT INTO rezepte_foods(rezepte_id,food_id) VALUES (1,1);
 INSERT INTO rezepte_foods(rezepte_id,food_id) VALUES (2,2);

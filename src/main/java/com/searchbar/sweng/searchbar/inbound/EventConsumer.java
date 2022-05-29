@@ -1,8 +1,8 @@
 package com.searchbar.sweng.searchbar.inbound;
 
-import com.searchbar.sweng.searchbar.model.EmailService;
+import com.searchbar.sweng.searchbar.model.Service.EmailService;
 import com.searchbar.sweng.searchbar.model.Event.UserRegisteredEvent;
-import com.searchbar.sweng.searchbar.model.RezepteService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

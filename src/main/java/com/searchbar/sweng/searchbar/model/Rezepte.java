@@ -30,6 +30,7 @@ public class Rezepte {
     private Menueart menueart;
     private boolean isVegan;
     private boolean isVegetarisch;
+    private String author;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "unvertraeglichkeiten_id")
     private Unvertraeglichkeiten unvertraeglichkeiten;
@@ -57,8 +58,9 @@ public class Rezepte {
         return sum;
     }
 
-    public Rezepte(String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
+    public Rezepte(String author,String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
                    boolean isVegan, boolean isVegetarisch,List<Food> foods,Unvertraeglichkeiten uv,String image){
+        this.author = author;
         this.name = rezeptName;
         this.arbeitszeit = arbeitszeit;
         this.kochzeit = kochzeit;
@@ -70,8 +72,9 @@ public class Rezepte {
         this.unvertraeglichkeiten = uv;
         this.image = image;
     }
-    public Rezepte(String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
+    public Rezepte(String author,String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
                    boolean isVegan, boolean isVegetarisch,List<Food> foods,Unvertraeglichkeiten uv){
+        this.author = author;
         this.name = rezeptName;
         this.arbeitszeit = arbeitszeit;
         this.kochzeit = kochzeit;
@@ -81,5 +84,34 @@ public class Rezepte {
         this.isVegetarisch = isVegetarisch;
         this.foods = foods;
         this.unvertraeglichkeiten = uv;
+    }
+    public Rezepte(String author,int id, String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
+                   boolean isVegan, boolean isVegetarisch,List<Food> foods,Unvertraeglichkeiten uv){
+        this.author = author;
+        this.id = id;
+        this.name = rezeptName;
+        this.arbeitszeit = arbeitszeit;
+        this.kochzeit = kochzeit;
+        this.portionen = portionen;
+        this.menueart = menueart;
+        this.isVegan = isVegan;
+        this.isVegetarisch = isVegetarisch;
+        this.foods = foods;
+        this.unvertraeglichkeiten = uv;
+    }
+    public Rezepte(String author,int id, String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
+                   boolean isVegan, boolean isVegetarisch,List<Food> foods,Unvertraeglichkeiten uv,String image){
+        this.author = author;
+        this.id = id;
+        this.name = rezeptName;
+        this.arbeitszeit = arbeitszeit;
+        this.kochzeit = kochzeit;
+        this.portionen = portionen;
+        this.menueart = menueart;
+        this.isVegan = isVegan;
+        this.isVegetarisch = isVegetarisch;
+        this.foods = foods;
+        this.unvertraeglichkeiten = uv;
+        this.image = image;
     }
 }

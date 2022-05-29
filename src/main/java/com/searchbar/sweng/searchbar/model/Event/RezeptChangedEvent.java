@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-public class RezeptAddedEvent {
+public class RezeptChangedEvent {
     private int id;
     private String name;
     private List<Food> foods;
@@ -31,7 +31,7 @@ public class RezeptAddedEvent {
     @Lob
     private String image;
 
-    public RezeptAddedEvent(Rezepte rezept){
+    public RezeptChangedEvent(Rezepte rezept){
         this.id = rezept.getId();
         this.name = rezept.getName();
         this.arbeitszeit = rezept.getArbeitszeit();
@@ -48,4 +48,3 @@ public class RezeptAddedEvent {
         this.image = rezept.getImage();
     }
 }
-

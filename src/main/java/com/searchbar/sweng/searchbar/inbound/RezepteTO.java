@@ -28,12 +28,14 @@ public class RezepteTO {
     private int gesamtzeit;
     private int kalorien;
     private int proteine;
+    private String author;
     @Lob
     private String image;
 
     public RezepteTO(Rezepte rezept){
         this.id = rezept.getId();
         this.name = rezept.getName();
+        this.author = rezept.getAuthor();
         this.arbeitszeit = rezept.getArbeitszeit();
         this.kochzeit = rezept.getKochzeit();
         this.portionen = rezept.getPortionen();

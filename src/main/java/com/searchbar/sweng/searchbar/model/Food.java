@@ -22,7 +22,6 @@ public class Food {
     @Version
     private int version;
 
-
     public Food(String name, int proteine, int kalorien, String menge){
         this.name = name;
         this.proteine = proteine;

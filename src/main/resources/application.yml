@@ -2,11 +2,13 @@
 spring:
   cloud:
     function:
-      definition: EventConsumer
+      definition: eventConsumer;eventPublisher
     stream:
-      source: eventPublisher
       bindings:
         eventPublisher-out-0:
+          destination: test.sweng
+          binder: cloud_rabbit
+        eventConsumer-in-0:
           destination: test.sweng
           binder: cloud_rabbit
       binders:
