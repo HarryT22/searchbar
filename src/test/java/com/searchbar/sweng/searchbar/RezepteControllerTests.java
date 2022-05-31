@@ -1,28 +1,24 @@
 package com.searchbar.sweng.searchbar;
 
 import com.searchbar.sweng.searchbar.inbound.RezepteController;
-import com.searchbar.sweng.searchbar.inbound.RezepteTO;
 import com.searchbar.sweng.searchbar.inbound.security.JwtValidator;
 import com.searchbar.sweng.searchbar.model.*;
 import com.searchbar.sweng.searchbar.model.Service.RezepteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
-import java.util.logging.Logger;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -33,6 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = RezepteController.class)
 public class RezepteControllerTests {
+
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private MockMvc mvc;
@@ -214,27 +212,36 @@ public class RezepteControllerTests {
         verify(rezepteService, Mockito.times(1)).listNormal("ADMIN", "Fleisch", false, false, false, false, false, 0, 1000, 0, 1000);
     }
 
-/*
+
 
     @Test
     public void saveRezeptWorks() throws Exception {
-        List<Food> foods = new ArrayList<>();
-        Unvertraeglichkeiten uv = new Unvertraeglichkeiten(false, false, false);
-        Rezepte r1000 = new Rezepte("Sandra", "Käse", 2, 4, 2, Menueart.FRÜHSTÜCK, false, false, foods, uv, "");
-        given(rezepteService.saveRezept("Sandra", "Käse", 2, 4, 2, Menueart.FRÜHSTÜCK, false, false, false, false, false, "")).willReturn(r1000);
-        this.mvc.perform(post("/rest/searchbar/addR/{name}/{az}/{kz}/{p}/{ma}/{iv}/{ivt}/{h}/{l}/{f}", "Käse", 2, 4, 2, Menueart.FRÜHSTÜCK, false, false, false, false, false)
-                        .header("Authorization", this.AUTH_HEADER))
-                .andDo(print())
-                .andExpect(status().isOk());
-        verify(rezepteService, Mockito.times(1)).saveRezept("Sandra", "Käse", 2, 4, 2, Menueart.FRÜHSTÜCK, false, false, false, false, false, "image");
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
+                .password("***")
+                .authorities(Role.ADMIN.getAuthority())
+                .build();
+        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
+        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
+        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
+        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
+
+        ArrayList<Food> foodsave = new ArrayList<>();
+        MockMultipartFile mockMF = new MockMultipartFile("images","image1","image/png","test".getBytes());
+        Rezepte save = new Rezepte("Sandra","Kase",2,4,2,Menueart.MITTAGESSEN,false,
+                false,foodsave,uv,"");
+
+        given(this.rezepteService.saveRezept("Sandra","Käse",2,4,2,
+                Menueart.FRÜHSTÜCK,false,false,false,false,false,"")).willReturn(save);
+
+        this.mvc.perform(multipart("/rest/searchbar/addR/{name}/{az}/{kz}/{p}/{ma}/{iv}/{ivt}/{h}/{l}/{f}",
+                "Kase",2,4,2,Menueart.MITTAGESSEN,false,false,false,false,false)
+                .file("file",mockMF.getBytes())
+                .header("Authorization",this.AUTH_HEADER))
+                .andDo(print());
+
+
+
     }
-
-    @Test
-    public void saveRezepteException() {
-
-    }
-*/
-
 
     @Test
     public void addFoodToRezeptWorks() throws Exception {
@@ -276,5 +283,29 @@ public class RezepteControllerTests {
                         .header("Authorization", this.AUTH_HEADER))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+    @Test
+    public void deleteFoodFromRezeptWorks() throws Exception {
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
+                .password("***")
+                .authorities(Role.ADMIN.getAuthority())
+                .build();
+        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
+        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
+        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
+        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
+
+        Rezepte r = new Rezepte("sandra", "Fleisch A", 4, 2, 2, Menueart.FRÜHSTÜCK, false, false, foods, uv);
+        given(this.rezepteService.deleteFoodFromRezept(0,0)).willReturn(r);
+        LOG.info(""+r.getId());
+        LOG.info(r.getName());
+        LOG.info(""+r.getFoods().get(0).getId());
+        LOG.info(""+r.getFoods().get(0).getName());
+        this.mvc.perform(delete("/rest/searchbar/{rId}/deleteF/{fId}",0,0)
+                .header("Authorization", this.AUTH_HEADER))
+                .andDo(print())
+                .andExpect(status().isOk());
+        Mockito.verify(rezepteService,Mockito.times(1)).deleteFoodFromRezept(0,0);
+
     }
 }

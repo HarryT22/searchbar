@@ -28,4 +28,11 @@ public class Food {
         this.kalorien = kalorien;
         this.menge = menge;
     }
+    public Food(int id,String name, int proteine, int kalorien, String menge){
+        this.id = id;
+        this.name = name;
+        this.proteine = proteine;
+        this.kalorien = kalorien;
+        this.menge = menge;
+    }
 }

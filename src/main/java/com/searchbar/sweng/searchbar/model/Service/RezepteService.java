@@ -1,8 +1,10 @@
 package com.searchbar.sweng.searchbar.model.Service;
 
 import com.searchbar.sweng.searchbar.model.Exceptions.NoSuchRecipieException;
+import com.searchbar.sweng.searchbar.model.Exceptions.ResourceNotFoundException;
 import com.searchbar.sweng.searchbar.model.Food;
 import com.searchbar.sweng.searchbar.model.Menueart;
+import com.searchbar.sweng.searchbar.model.Repositories.FoodRepository;
 import com.searchbar.sweng.searchbar.model.Repositories.RezepteRepository;
 import com.searchbar.sweng.searchbar.model.Rezepte;
 import com.searchbar.sweng.searchbar.model.Unvertraeglichkeiten;
@@ -24,10 +26,12 @@ public class RezepteService {
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     private RezepteRepository rezepteRepository;
+    private FoodRepository foodRepository;
 
     @Autowired
-    public RezepteService(RezepteRepository rezepteRepository) {
+    public RezepteService(RezepteRepository rezepteRepository,FoodRepository foodRepository) {
         this.rezepteRepository = rezepteRepository;
+        this.foodRepository = foodRepository;
     }
 
     /**
@@ -54,38 +58,47 @@ public class RezepteService {
         if (!rezepte.isEmpty()) {
             for (Rezepte r : rezepte) {
                 if (isVegan && !r.isVegan()) {
+                    LOG.info("Delete recipie {} vegan",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (isVegetarisch && !r.isVegetarisch()) {
+                    LOG.info("Delete recipie {} vegetarisch",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (fructose && !r.getUnvertraeglichkeiten().isFructose()) {
+                    LOG.info("Delete recipie {} fructose",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (lactose && !r.getUnvertraeglichkeiten().isLactose()) {
+                    LOG.info("Delete recipie {} lactose",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (histamine && !r.getUnvertraeglichkeiten().isHistamine()) {
+                    LOG.info("Delete recipie {} histamien",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (minK >= r.getCalories()) {
+                    LOG.info("Delete recipie {} calorie min",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (maxK <= r.getCalories()) {
+                    LOG.info("Delete recipie {} calorie max",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (minP >= r.getProteins()) {
+                    LOG.info("Delete recipie {} protein min",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (maxP <= r.getProteins()) {
+                    LOG.info("Delete recipie {} protein max",r.getName());
                     toRemove.add(r);
                 }
             }
@@ -93,13 +106,13 @@ public class RezepteService {
             rezepte.removeAll(toRemove);
             if(role.equals("NORMAL")) {
                 if (rezepte.size() >= 5) {
-                    LOG.info("Correctly filtered.");
+                    LOG.info("Returned {} recipies, for NORMAL user.",rezepte.size());
                     return rezepte.stream().limit(5).collect(Collectors.toList());
                 }
             }
             if(role.equals("ADMIN")||role.equals("PREMIUM")){
                 if (rezepte.size() >= 10) {
-                    LOG.info("Correctly filtered.");
+                    LOG.info("Returned {} recipies for PREMIUM OR ADMIN.",rezepte.size());
                     return rezepte.stream().limit(10).collect(Collectors.toList());
                 }
             }
@@ -107,7 +120,7 @@ public class RezepteService {
                 LOG.info("After filtering no recipies left.");
                 throw new NoSuchRecipieException("Ein Rezept mit diesen Filtern existiert nicht");
             }
-            LOG.info("Returned less than 5 or 10 recipies.");
+            LOG.info("Returned {} recipies.",rezepte.size());
             return rezepte;
         } else {
             LOG.info("Theres no recipie for this keyword.");
@@ -135,22 +148,10 @@ public class RezepteService {
     public Rezepte saveRezept(String author,String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
                            boolean isVegan, boolean isVegetarisch, boolean h, boolean l, boolean f, String file) {
         LOG.info("Execute saveRezept for {}",rezeptName);
-        Rezepte r = new Rezepte();
-        Unvertraeglichkeiten uv = new Unvertraeglichkeiten();
-        uv.setFructose(f);
-        uv.setLactose(l);
-        uv.setHistamine(h);
-        r.setAuthor(author);
-        r.setName(rezeptName);
-        r.setArbeitszeit(arbeitszeit);
-        r.setKochzeit(kochzeit);
-        r.setPortionen(portionen);
-        r.setMenueart(menueart);
-        r.setVegan(isVegan);
-        r.setVegetarisch(isVegetarisch);
-        r.setUnvertraeglichkeiten(uv);
-        r.setImage(file);
-        LOG.info("Succesfully added recipie {}.",rezeptName);
+        ArrayList<Food> list = new ArrayList<>();
+        Unvertraeglichkeiten uv = new Unvertraeglichkeiten(h,f,l);
+        Rezepte r = new Rezepte(author,rezeptName,arbeitszeit,kochzeit,portionen,menueart,isVegan,isVegetarisch,list,uv,file);
+        LOG.info("Succesfully added recipie {} ID IS {}.",rezeptName);
         return r;
     }
 
@@ -176,6 +177,27 @@ public class RezepteService {
             return r;
         } else {
             LOG.info("Recipie with id {} does not exist.",id);
+            throw new NoSuchRecipieException("No recipie found");
+        }
+    }
+
+    @Transactional
+    public Rezepte deleteFoodFromRezept(int rId,int fId) {
+        LOG.info("Execute deleteFoodFromRezept with parameters rId{} fId{}.",rId,fId);
+        Optional<Rezepte> rOptional = rezepteRepository.findById(rId);
+        if (rOptional.isPresent()) {
+            Rezepte r = rOptional.get();
+            List<Food> fl = r.getFoods();
+            Optional<Food> f = foodRepository.findById(fId);
+            if (!f.isPresent()){
+                throw new ResourceNotFoundException("No food with that id found.");
+            }
+            fl.remove(f.get());
+            r.setFoods(fl);
+            LOG.info("Successfully deleted foods.");
+            return r;
+        } else {
+            LOG.info("Recipie with id {} does not exist.",rId);
             throw new NoSuchRecipieException("No recipie found");
         }
     }

@@ -33,7 +33,7 @@ public class RezepteTO {
     private String image;
 
     public RezepteTO(Rezepte rezept){
-        this.id = rezept.getId();
+        System.out.print("Hallo");
         this.name = rezept.getName();
         this.author = rezept.getAuthor();
         this.arbeitszeit = rezept.getArbeitszeit();

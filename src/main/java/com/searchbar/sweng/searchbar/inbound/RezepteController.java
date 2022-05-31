@@ -100,12 +100,12 @@ public class RezepteController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/addR/{name}/{az}/{kz}/{p}/{ma}/{iv}/{ivt}/{h}/{l}/{f}")
     public RezepteTO saveRezept(@RequestHeader String Authorization,@PathVariable("name") String rezeptName,
-                                @PathVariable("az") int arbeitszeit, @PathVariable("kz") int kochzeit,
+                                @PathVariable("az") int arbeitszeit,@PathVariable("kz") int kochzeit,
                                 @PathVariable("p") int portionen, @PathVariable("ma") Menueart menueart,
                                 @PathVariable("iv") boolean isVegan, @PathVariable("ivt") boolean isVegetarisch,
                                 @PathVariable("h") boolean h, @PathVariable("l") boolean l, @PathVariable("f") boolean f,
                                 @RequestParam("file") MultipartFile file) {
-        LOGGER.info("Received POST-Request /rest/searchbar/addR with parameter {}).",rezeptName);
+        LOGGER.info("Received POST-Request /rest/searchbar/addR with parameter {},{},{},{},{},{},{},{},{},{}).",rezeptName,arbeitszeit,kochzeit,portionen,menueart,isVegan,isVegetarisch,h,l,f);
         String author = jwtValidator.getUserEmail(Authorization.substring(7));
         String image ="";
         if (file.getOriginalFilename() != null) {
@@ -120,8 +120,12 @@ public class RezepteController {
                 e.printStackTrace();
             }
         }
+        LOGGER.info(rezeptName);
+        LOGGER.info(author);
+        LOGGER.info(rezeptName);
+        LOGGER.info(image);
+        Rezepte r =  rezepteService.saveRezept(author,rezeptName, arbeitszeit, kochzeit, portionen, menueart, isVegan, isVegetarisch, h, l, f,image);
 
-        Rezepte r = rezepteService.saveRezept(author,rezeptName, arbeitszeit, kochzeit, portionen, menueart, isVegan, isVegetarisch, h, l, f,image);
         return new RezepteTO(r);
     }
 
@@ -139,8 +143,7 @@ public class RezepteController {
     public RezepteTO addFood(@PathVariable("id")int id,@PathVariable("name") String name, @PathVariable("k") int kalorien, @PathVariable("p") int protein,
                              @PathVariable("menge") String menge) {
         LOGGER.info("Received POST-Request /rest/searchbar/{}/addF ).",id);
-        Rezepte r = rezepteService.addFoodToRezept(name, kalorien, protein, menge, id);
-        return new RezepteTO(r);
+        return new RezepteTO(rezepteService.addFoodToRezept(name, kalorien, protein, menge, id));
     }
 
     /**
@@ -152,5 +155,13 @@ public class RezepteController {
     public void deleteRezept(@PathVariable("id") int id) {
         LOGGER.info("Received DELETE-Request /rest/searchbar/delete/{} ).",id);
         rezepteService.deleteRezept(id);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("/{rId}/deleteF/{fId}")
+    public RezepteTO deleteFoodFromRezept(@PathVariable("rId") int rId,@PathVariable("fId") int fId) {
+        LOGGER.info("Received DELETE-Request /rest/searchbar/{}/deleteF/{}} ).",rId,fId);
+        Rezepte r =rezepteService.deleteFoodFromRezept(rId,fId);
+        return new RezepteTO(r);
     }
 }
