@@ -81,6 +81,14 @@ public class RezepteControllerTests {
 
     @BeforeEach
     public void setUp() throws Exception {
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
+                .password("***")
+                .authorities(Role.ADMIN.getAuthority())
+                .build();
+        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
+        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
+        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
+        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
 
         this.uv = new Unvertraeglichkeiten(false, false, false);
         this.uv2 = new Unvertraeglichkeiten(true, true, true);
@@ -181,14 +189,6 @@ public class RezepteControllerTests {
 
     @Test
     public void listZehn() throws Exception {
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
-                .password("***")
-                .authorities(Role.ADMIN.getAuthority())
-                .build();
-        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
-        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
-        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
-        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
 
         List<Rezepte> test = new ArrayList<>();
         test.add(r);
@@ -216,19 +216,10 @@ public class RezepteControllerTests {
 
     @Test
     public void saveRezeptWorks() throws Exception {
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
-                .password("***")
-                .authorities(Role.ADMIN.getAuthority())
-                .build();
-        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
-        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
-        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
-        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
-
         ArrayList<Food> foodsave = new ArrayList<>();
         MockMultipartFile mockMF = new MockMultipartFile("images","image1","image/png","test".getBytes());
         Rezepte save = new Rezepte("Sandra","Kase",2,4,2,Menueart.MITTAGESSEN,false,
-                false,foodsave,uv,"");
+                false,foodsave,uv,"dGVzdA==");
 
         given(this.rezepteService.saveRezept("Sandra","Käse",2,4,2,
                 Menueart.FRÜHSTÜCK,false,false,false,false,false,"")).willReturn(save);
@@ -245,40 +236,21 @@ public class RezepteControllerTests {
 
     @Test
     public void addFoodToRezeptWorks() throws Exception {
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
-                .password("***")
-                .authorities(Role.ADMIN.getAuthority())
-                .build();
-        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
-        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
-        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
-        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
-
-
         List<Food> foods = new ArrayList<>();
         Unvertraeglichkeiten uv = new Unvertraeglichkeiten(false, false, false);
         foods.add(new Food("Käse", 200, 400, "400G"));
-        r15 = new Rezepte("Sandra", 200, "Fleisch I", 2, 4, 2, Menueart.FRÜHSTÜCK, false, false, foods, uv);
+        r15 = new Rezepte("Sandra", 0, "Fleisch I", 2, 4, 2, Menueart.FRÜHSTÜCK, false, false, foods, uv);
         given(this.rezepteService.addFoodToRezept("Käse", 200, 400, "400G", 15)).willReturn(r15);
         this.mvc.perform(post("/rest/searchbar/{id}/addF/{name}/{k}/{p}/{menge}", 15, "Käse", 200, 400, "400G")
                         .header("Authorization", this.AUTH_HEADER))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"id\":200,\"name\":\"Fleisch I\",\"foods\":[{\"id\":0,\"name\":\"Käse\",\"proteine\":200,\"kalorien\":400,\"menge\":\"400G\",\"version\":0}],\"arbeitszeit\":2,\"kochzeit\":4,\"portionen\":2,\"menueart\":\"FRÜHSTÜCK\",\"unvertraeglichkeiten\":{\"id\":0,\"histamine\":false,\"fructose\":false,\"lactose\":false,\"version\":0},\"gesamtzeit\":6,\"kalorien\":400,\"proteine\":200,\"author\":\"Sandra\",\"image\":null,\"vegan\":false,\"vegetarisch\":false}"));
+                .andExpect(content().json("{\"id\":0,\"name\":\"Fleisch I\",\"foods\":[{\"id\":0,\"name\":\"Käse\",\"proteine\":200,\"kalorien\":400,\"menge\":\"400G\",\"version\":0}],\"arbeitszeit\":2,\"kochzeit\":4,\"portionen\":2,\"menueart\":\"FRÜHSTÜCK\",\"unvertraeglichkeiten\":{\"id\":0,\"histamine\":false,\"fructose\":false,\"lactose\":false,\"version\":0},\"gesamtzeit\":6,\"kalorien\":400,\"proteine\":200,\"author\":\"Sandra\",\"image\":null,\"vegan\":false,\"vegetarisch\":false}"));
         verify(rezepteService, Mockito.times(1)).addFoodToRezept("Käse", 200, 400, "400G", 15);
     }
 
     @Test
     public void deleteRezeptWorks() throws Exception {
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
-                .password("***")
-                .authorities(Role.ADMIN.getAuthority())
-                .build();
-        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
-        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
-        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
-        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
-
         this.mvc.perform(delete("/rest/searchbar/delete/{id}", 0)
                         .header("Authorization", this.AUTH_HEADER))
                 .andDo(print())
@@ -286,15 +258,6 @@ public class RezepteControllerTests {
     }
     @Test
     public void deleteFoodFromRezeptWorks() throws Exception {
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
-                .password("***")
-                .authorities(Role.ADMIN.getAuthority())
-                .build();
-        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
-        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
-        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
-        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
-
         Rezepte r = new Rezepte("sandra", "Fleisch A", 4, 2, 2, Menueart.FRÜHSTÜCK, false, false, foods, uv);
         given(this.rezepteService.deleteFoodFromRezept(0,0)).willReturn(r);
         LOG.info(""+r.getId());
