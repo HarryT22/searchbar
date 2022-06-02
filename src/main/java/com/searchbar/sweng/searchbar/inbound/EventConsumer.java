@@ -21,6 +21,10 @@ public class EventConsumer implements Consumer<UserRegisteredEvent> {
         this.emailService = emailService;
     }
 
+    /**
+     * Accepts a UserRegisteredEvent and calls a function in my EmailService class.
+     * @param userRegisteredEvent with the data passed by the Login and Registration Microservice.
+     */
     @Override
     public void accept(UserRegisteredEvent userRegisteredEvent) {
         LOGGER.info("Consumed Event: " + userRegisteredEvent);

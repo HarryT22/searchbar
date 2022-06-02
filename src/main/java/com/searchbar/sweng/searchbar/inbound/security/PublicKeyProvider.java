@@ -18,6 +18,9 @@ public class PublicKeyProvider {
 
     private PublicKey publicKey;
 
+    /**
+     * Sets up the public key from the publicKey file to make is useable in our code.
+     */
     @PostConstruct
     protected void loadSigningKeys() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
         //read public key

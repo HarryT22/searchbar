@@ -1,5 +1,6 @@
 package com.searchbar.sweng.searchbar;
 
+import com.searchbar.sweng.searchbar.model.Event.EventPublisher;
 import com.searchbar.sweng.searchbar.model.Exceptions.NoSuchRecipieException;
 import com.searchbar.sweng.searchbar.model.Repositories.FoodRepository;
 import com.searchbar.sweng.searchbar.model.Service.RezepteService;
@@ -9,9 +10,11 @@ import com.searchbar.sweng.searchbar.model.Repositories.RezepteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -31,6 +34,9 @@ public class RezepteServiceTests {
 
     RezepteService rezepteService;
 
+    @Mock
+    EventPublisher eventPublisher;
+
     ArrayList<Food> foods;
     Unvertraeglichkeiten uv;
     Food food;
@@ -39,7 +45,7 @@ public class RezepteServiceTests {
 
     @BeforeEach
     public void setUp() throws Exception {
-        this.rezepteService = new RezepteService(this.rezepteRepository, this.foodRepository);
+        this.rezepteService = new RezepteService(this.rezepteRepository, this.foodRepository,this.eventPublisher);
         this.foods = new ArrayList<>();
         this.uv = new Unvertraeglichkeiten(false,false,false);
         this.food = new Food("Fleisch",200,400,"400 Gramm");
@@ -48,6 +54,10 @@ public class RezepteServiceTests {
         this.test = new ArrayList<>();
     }
 
+    /**
+     * Tests if the listNormal method filters the intolerances and preferences correctly.
+     * Also tests the role based amount of recipes returned by the method.
+     */
     @Test
     public void listNormalWorks() {
         List<Rezepte> test = new ArrayList<>();
@@ -113,6 +123,9 @@ public class RezepteServiceTests {
 
     }
 
+    /**
+     * Tests if the method throws the correct exception when the list is empty.
+     */
     @Test
     public void listNormalException() {
         ArrayList<Rezepte> results = new ArrayList<>();
@@ -122,6 +135,9 @@ public class RezepteServiceTests {
         });
     }
 
+    /**
+     * Tests if the method throws the correct exception when the list has something in it.
+     */
     @Test
     public void listNormalException2() {
         ArrayList<Rezepte> results = new ArrayList<>();
@@ -131,8 +147,13 @@ public class RezepteServiceTests {
             rezepteService.listNormal("NORMAL","test",false,false,false,false,false,500,1000,500,1000);
         });
     }
+
+    /**
+     * Tests that you can save a recipe correctly.
+     */
     @Test
     public void saveRezeptWorks() {
+        given(this.eventPublisher.publishEvent(ArgumentMatchers.any())).willReturn(true);
         Rezepte t = this.rezepteService.saveRezept("Sandra","test",2,4,2,Menueart.FRÜHSTÜCK,false,false,false,false,false,"");
         assertThat(t.getAuthor(), is ("Sandra"));
         assertThat(t.getName(), is ("test"));
@@ -148,6 +169,9 @@ public class RezepteServiceTests {
         assertThat(t.getImage(), is(""));
     }
 
+    /**
+     * Tests if the method returns the correct recipe with the foods added in the foods list.
+     */
     @Test
     public void addFoodToRezeptWorks() {
         List<Food> foods = new ArrayList<>();
@@ -173,6 +197,9 @@ public class RezepteServiceTests {
         assertThat(result.getFoods().get(0).getMenge(), is("400G"));
     }
 
+    /**
+     * Tests if the method throws the correct exception if the recipe does not exist.
+     */
     @Test
     public void addFoodToRezeptException() {
         given(rezepteRepository.findById(2000)).willReturn(Optional.empty());
@@ -181,6 +208,9 @@ public class RezepteServiceTests {
         });
     }
 
+    /**
+     * Tests if the method deletes the recipe correctly.
+     */
     @Test
     public void shouldCanDeleteRezept() {
         Rezepte r2 = new Rezepte();
@@ -190,6 +220,9 @@ public class RezepteServiceTests {
         verify(rezepteRepository, Mockito.times(1)).delete(r2);
     }
 
+    /**
+     * Tests if the method throws the correct exception when the list is empty.
+     */
     @Test
     public void shouldCanDeleteRezeptException() {
         given(rezepteRepository.findById(2000)).willReturn(Optional.empty());
@@ -198,6 +231,9 @@ public class RezepteServiceTests {
         });
     }
 
+    /**
+     * Tests if the method deletes the correct food from the specified recipe
+     */
     @Test
     public void shouldCanDelteFoodFromRezept() {
         Unvertraeglichkeiten testuv = new Unvertraeglichkeiten(false,true,true);

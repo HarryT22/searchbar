@@ -13,6 +13,9 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 public class Rezepte {
+    /**
+     * Most important class, stores all the information a recipe has and offers helping methods to other classes.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rezepte_id", updatable = false, nullable = false)

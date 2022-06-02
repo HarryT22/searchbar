@@ -11,6 +11,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class Food {
+    /**
+     * The food class is used for protein and calorie calculation in the RezepteTO class. Also serves the purpose of storing the amount of the food as a string.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "food_id")

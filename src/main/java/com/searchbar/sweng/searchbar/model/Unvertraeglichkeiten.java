@@ -12,6 +12,9 @@ import javax.persistence.*;
 @Table(name = "unvertraeglichkeiten")
 @Entity
 public class Unvertraeglichkeiten {
+    /**
+     * This class saves the intolerances that are used to filter the recipes in the RezepteService class.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

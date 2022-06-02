@@ -1,5 +1,8 @@
 package com.searchbar.sweng.searchbar.model.Service;
 
+import com.searchbar.sweng.searchbar.model.Event.EventPublisher;
+import com.searchbar.sweng.searchbar.model.Event.RezeptAddedEvent;
+import com.searchbar.sweng.searchbar.model.Exceptions.MessageNotSendException;
 import com.searchbar.sweng.searchbar.model.Exceptions.NoSuchRecipieException;
 import com.searchbar.sweng.searchbar.model.Exceptions.ResourceNotFoundException;
 import com.searchbar.sweng.searchbar.model.Food;
@@ -27,15 +30,17 @@ public class RezepteService {
 
     private RezepteRepository rezepteRepository;
     private FoodRepository foodRepository;
+    private EventPublisher eventPublisher;
 
     @Autowired
-    public RezepteService(RezepteRepository rezepteRepository,FoodRepository foodRepository) {
+    public RezepteService(RezepteRepository rezepteRepository,FoodRepository foodRepository, EventPublisher eventPublisher) {
         this.rezepteRepository = rezepteRepository;
         this.foodRepository = foodRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     /**
-     * Search for recipies with certain filters
+     * Search for recipes with certain filters
      * @param role role of the user that is using this method
      * @param name keyword for search
      * @param fructose fructose for intolerance filter
@@ -43,11 +48,11 @@ public class RezepteService {
      * @param histamine histamine for intolerance filter
      * @param isVegan for preference filter
      * @param isVegetarisch for preference filter
-     * @param minK minimum calories of the recipie
-     * @param maxK maximum calories of the recipie
-     * @param minP minimum proteins of the recipie
-     * @param maxP maximum proteins of the recipie
-     * @return list of filtered recipies
+     * @param minK minimum calories of the recipe
+     * @param maxK maximum calories of the recipe
+     * @param minP minimum proteins of the recipe
+     * @param maxP maximum proteins of the recipe
+     * @return list of filtered recipes
      */
     @Transactional(readOnly=true)
     public List<Rezepte> listNormal(String role, String name, boolean fructose, boolean lactose, boolean histamine, boolean isVegan,
@@ -58,47 +63,47 @@ public class RezepteService {
         if (!rezepte.isEmpty()) {
             for (Rezepte r : rezepte) {
                 if (isVegan && !r.isVegan()) {
-                    LOG.info("Delete recipie {} vegan",r.getName());
+                    LOG.info("Delete recipe {} vegan",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (isVegetarisch && !r.isVegetarisch()) {
-                    LOG.info("Delete recipie {} vegetarisch",r.getName());
+                    LOG.info("Delete recipe {} vegetarisch",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (fructose && !r.getUnvertraeglichkeiten().isFructose()) {
-                    LOG.info("Delete recipie {} fructose",r.getName());
+                    LOG.info("Delete recipe {} fructose",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (lactose && !r.getUnvertraeglichkeiten().isLactose()) {
-                    LOG.info("Delete recipie {} lactose",r.getName());
+                    LOG.info("Delete recipe {} lactose",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (histamine && !r.getUnvertraeglichkeiten().isHistamine()) {
-                    LOG.info("Delete recipie {} histamien",r.getName());
+                    LOG.info("Delete recipe {} histamine",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (minK >= r.getCalories()) {
-                    LOG.info("Delete recipie {} calorie min",r.getName());
+                    LOG.info("Delete recipe {} calorie min",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (maxK <= r.getCalories()) {
-                    LOG.info("Delete recipie {} calorie max",r.getName());
+                    LOG.info("Delete recipe {} calorie max",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (minP >= r.getProteins()) {
-                    LOG.info("Delete recipie {} protein min",r.getName());
+                    LOG.info("Delete recipe {} protein min",r.getName());
                     toRemove.add(r);
                     continue;
                 }
                 if (maxP <= r.getProteins()) {
-                    LOG.info("Delete recipie {} protein max",r.getName());
+                    LOG.info("Delete recipe {} protein max",r.getName());
                     toRemove.add(r);
                 }
             }
@@ -106,31 +111,31 @@ public class RezepteService {
             rezepte.removeAll(toRemove);
             if(role.equals("NORMAL")) {
                 if (rezepte.size() >= 5) {
-                    LOG.info("Returned {} recipies, for NORMAL user.",rezepte.size());
+                    LOG.info("Returned {} recipes, for NORMAL user.",rezepte.size());
                     return rezepte.stream().limit(5).collect(Collectors.toList());
                 }
             }
             if(role.equals("ADMIN")||role.equals("PREMIUM")){
                 if (rezepte.size() >= 10) {
-                    LOG.info("Returned {} recipies for PREMIUM OR ADMIN.",rezepte.size());
+                    LOG.info("Returned {} recipes for PREMIUM OR ADMIN.",rezepte.size());
                     return rezepte.stream().limit(10).collect(Collectors.toList());
                 }
             }
             if (rezepte.isEmpty()) {
-                LOG.info("After filtering no recipies left.");
+                LOG.info("After filtering no recipes left.");
                 throw new NoSuchRecipieException("Ein Rezept mit diesen Filtern existiert nicht");
             }
-            LOG.info("Returned {} recipies.",rezepte.size());
+            LOG.info("Returned {} recipes.",rezepte.size());
             return rezepte;
         } else {
-            LOG.info("Theres no recipie for this keyword.");
+            LOG.info("Theres no recipe for this keyword.");
             throw new NoSuchRecipieException("Ein solches Rezept existiert nicht.");
         }
     }
 
     /**
-     * Save a recipie with an image
-     * @param author  email of the author of this recipie
+     * Save a recipe with an image
+     * @param author  email of the author of this recipe
      * @param rezeptName name of the recipie
      * @param arbeitszeit working time
      * @param kochzeit cooking time
@@ -142,26 +147,33 @@ public class RezepteService {
      * @param l lactose for intolerance filter
      * @param f fructose for intolerance filter
      * @param file image of the recipie
-     * @return the recipie construct
+     * @return the recipe construct
      */
-    @Transactional
+    @Transactional(rollbackFor = MessageNotSendException.class)
     public Rezepte saveRezept(String author,String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
                            boolean isVegan, boolean isVegetarisch, boolean h, boolean l, boolean f, String file) {
         LOG.info("Execute saveRezept for {}",rezeptName);
         ArrayList<Food> list = new ArrayList<>();
         Unvertraeglichkeiten uv = new Unvertraeglichkeiten(h,f,l);
         Rezepte r = new Rezepte(author,rezeptName,arbeitszeit,kochzeit,portionen,menueart,isVegan,isVegetarisch,list,uv,file);
-        LOG.info("Succesfully added recipie {} ID IS {}.",rezeptName);
+        LOG.info("Successfully added recipe {} ID IS {}.",rezeptName,r.getId());
+        var event = new RezeptAddedEvent(r);
+        var published = this.eventPublisher.publishEvent(event);
+        if(!published){
+            LOG.info("Unsuccessfully published.");
+            throw new MessageNotSendException("Event unsuccessfully published.");
+        }
+        LOG.info("Successfully published");
         return r;
     }
 
     /**
-     * Add a food to the food-list of a recipie
+     * Add food to the food-list of a recipe
      * @param name name of the food item
-     * @param proteine amount of proteine of the food
+     * @param proteine amount of protein of the food
      * @param kalorien amount of calories of the food
-     * @param id id of the recipie the food is getting added to
-     * @return the updated recipie
+     * @param id id of the recipe the food is getting added to
+     * @return the updated recipe
      */
     @Transactional
     public Rezepte addFoodToRezept(String name, int proteine, int kalorien, String menge, int id) {
@@ -177,10 +189,16 @@ public class RezepteService {
             return r;
         } else {
             LOG.info("Recipie with id {} does not exist.",id);
-            throw new NoSuchRecipieException("No recipie found");
+            throw new NoSuchRecipieException("No recipe found");
         }
     }
 
+    /**
+     * Add a food to the food-list of a recipe
+     * @param rId ID of the recipe that the food is going to be deleted from
+     * @param fId ID of the food item that is going to be deleted
+     * @return the updated recipe
+     */
     @Transactional
     public Rezepte deleteFoodFromRezept(int rId,int fId) {
         LOG.info("Execute deleteFoodFromRezept with parameters rId{} fId{}.",rId,fId);
@@ -193,18 +211,18 @@ public class RezepteService {
                 throw new ResourceNotFoundException("No food with that id found.");
             }
             fl.remove(f.get());
-            r.setFoods(fl);
+            r .setFoods(fl);
             LOG.info("Successfully deleted foods.");
             return r;
         } else {
-            LOG.info("Recipie with id {} does not exist.",rId);
-            throw new NoSuchRecipieException("No recipie found");
+            LOG.info("Recipe with id {} does not exist.",rId);
+            throw new NoSuchRecipieException("No recipe found");
         }
     }
 
     /**
-     * Delete a recipie from the database.
-     * @param id Id of the recipie that is supposed to be deleted.
+     * Delete a recipe from the database.
+     * @param id ID of the recipe that is supposed to be deleted.
      */
     @Transactional
     public void deleteRezept(int id) {
@@ -212,11 +230,11 @@ public class RezepteService {
         Optional<Rezepte> rezepteOptional = rezepteRepository.findById(id);
         if (rezepteOptional.isPresent()) {
             Rezepte r = rezepteOptional.get();
-            LOG.info("Successfully deleted recipie with id ({}).", id);
+            LOG.info("Successfully deleted recipe with id ({}).", id);
             rezepteRepository.delete(r);
         } else {
             LOG.info("No recipie with this id {}.", id);
-            throw new NoSuchRecipieException("This Recipie does not exist");
+            throw new NoSuchRecipieException("This Recipe does not exist");
         }
     }
 }

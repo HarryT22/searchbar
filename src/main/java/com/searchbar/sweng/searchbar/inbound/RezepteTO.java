@@ -15,6 +15,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class RezepteTO {
+    /**
+     * This class is a transfer object for the recipe class and adds some new attributes like gesamtzeit, kalorien and proteine.
+     */
     private int id;
     private String name;
     private List<Food> foods;

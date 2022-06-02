@@ -31,7 +31,11 @@ public class JwtValidator {
         return null;
     }
 
-
+    /**
+     * Takes the token and verifies if it is valid or not
+     * @param token
+     * @return boolean if the JWT is valid or not.
+     */
     public boolean isValidJWT(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(keys.getPublicKey()).build().parseClaimsJws(token);
@@ -42,9 +46,9 @@ public class JwtValidator {
     }
 
     /**
-     * Derives Authentication object from JWT.
+     * Derives Authentication object from JWT which you can use for getting the Authorities(Roles) and even setting them. You can also use getPrincipal to retrive User Data.
      * @param token
-     * @return
+     * @return a UsernamePasswordAuthenticationToken
      */
     public Authentication getAuthentication(String token) {
         return new UsernamePasswordAuthenticationToken(getUserEmail(token), "", getRoles(token));
@@ -62,7 +66,7 @@ public class JwtValidator {
     /**
      * Extracts the user roles from a JWT.
      * @param token
-     * @return
+     * @return collection of GrantedAuthority(not really usable since its abstract?).
      */
     public Collection<GrantedAuthority> getRoles(String token) {
         Collection<GrantedAuthority> result = new ArrayList<>();

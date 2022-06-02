@@ -13,6 +13,9 @@ public class JwtFilterConfigurer extends SecurityConfigurerAdapter<DefaultSecuri
         this.jwtValidator = jwtValidator;
     }
 
+    /**
+     * Takes the personally configured filter from the JWT Filter class and requires the authentication for all methods that are not present in the filter.
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         JwtFilter customFilter = new JwtFilter(jwtValidator);

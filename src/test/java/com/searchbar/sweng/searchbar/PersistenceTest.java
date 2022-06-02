@@ -25,6 +25,9 @@ public class PersistenceTest {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Tests if the method can find the correct recipes.
+     */
     @Test
     public void findByNameShouldWork(){
         List<Rezepte> rezepte = rezepteRepository.findByName("Fleisch");
@@ -41,6 +44,10 @@ public class PersistenceTest {
         List<Rezepte> rezepte4 = rezepteRepository.findByName("Fleisch");
         assert(rezepte4.size() == 6);
     }
+
+    /**
+     * Tests if the method can find the right recipe by ID.
+     */
     @Test
     public void findByIdShouldWork() {
         Optional<Rezepte> r1 = rezepteRepository.findById(1);
@@ -51,6 +58,10 @@ public class PersistenceTest {
         Optional<Rezepte> r2 = rezepteRepository.findById(50);
         assertFalse(r2.isPresent());
     }
+
+    /**
+     * Tests if the method can find the recipe that has been added recently(for the EmailService).
+     */
     @Test
     public void findFirstByIdOrderByIdDescShouldWork() {
         Rezepte r = rezepteRepository.findFirstByOrderByIdDesc();
@@ -59,6 +70,9 @@ public class PersistenceTest {
         assertEquals(6,r.getId());
     }
 
+    /**
+     * Tests if the method can save a recipe correctly.
+     */
     @Test
     public void saveWorks(){
         Unvertraeglichkeiten uv = new Unvertraeglichkeiten(false,false,false);
@@ -73,6 +87,9 @@ public class PersistenceTest {
         assertEquals(1,results.size());
     }
 
+    /**
+     * Tests if the method can delete a recipe correctly.
+     */
     @Test
     public void deleteWorks(){
         Unvertraeglichkeiten uv = new Unvertraeglichkeiten(false,false,false);
@@ -87,6 +104,9 @@ public class PersistenceTest {
         assertTrue(results.isEmpty());
     }
 
+    /**
+     * Tests if the method can find a user by name.
+     */
     @Test
     public void userFindByNameWorks() {
         List<User> result = userRepository.findByName("Pablo");
@@ -95,6 +115,9 @@ public class PersistenceTest {
         assertTrue(result2.isEmpty());
     }
 
+    /**
+     * Tests if the method can find a user by email.
+     */
     @Test
     public void userFindByEmailWorks(){
         Optional<User> result = userRepository.findByEmail("pablo@fhms.de");

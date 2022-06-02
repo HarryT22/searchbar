@@ -25,7 +25,7 @@ public class EmailService {
     }
 
     /**
-     * Send the last added recipie to a newly registered user
+     * Send the last added recipe to a newly registered user
      * @param name name of the new user
      * @param address email address of the user
      */

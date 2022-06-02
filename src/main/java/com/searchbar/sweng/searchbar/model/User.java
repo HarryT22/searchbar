@@ -14,7 +14,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class User {
-
+    /**
+     * The User class is used for the UserRegisteredEvent.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

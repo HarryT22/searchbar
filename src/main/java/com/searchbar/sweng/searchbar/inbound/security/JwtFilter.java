@@ -18,6 +18,10 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtValidator = jwtValidator;
     }
 
+
+    /**
+     * Checks if there is a valid JWT Token and sets the Authentication(roles)
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtValidator.resolveToken(httpServletRequest);

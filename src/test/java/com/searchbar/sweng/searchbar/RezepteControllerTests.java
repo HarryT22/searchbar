@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.core.userdetails.UserDetails;
 
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -76,7 +77,7 @@ public class RezepteControllerTests {
     private Food f6;
 
     private final String AUTH_HEADER = "Bearer ANY-JWT-STRING";
-    ;
+
     private final String TEST_USER_EMAIL = "harry@hacker.de";
 
     @BeforeEach
@@ -134,20 +135,14 @@ public class RezepteControllerTests {
 
     }
 
+    /**
+     * Tests if the method can list only one recipe.
+     */
     @Test
     public void listEins() throws Exception {
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
-                .password("***")
-                .authorities(Role.NORMAL.getAuthority())
-                .build();
-        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
-        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
-        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
-        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
-
         List<Rezepte> test = new ArrayList<>();
         test.add(r);
-        given(this.rezepteService.listNormal("NORMAL", "Fleisch", false, false, false,
+        given(this.rezepteService.listNormal("ADMIN", "Fleisch", false, false, false,
                 false, false, 0, 1000, 0, 1000)).willReturn(test);
         this.mvc.perform(get("/rest/searchbar/{name}/{f}/{l}/{h}/{vegan}/{vegetarisch}/{mink}/{maxk}/{minp}/{maxp}",
                         "Fleisch", false, false, false, false, false, 0, 1000, 0, 1000)
@@ -155,9 +150,12 @@ public class RezepteControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{'id':0,'name':'Fleisch A','foods':[{'id':0,'name':'Fleisch','proteine':200,'kalorien':200,'menge':'400Gramm'}],'arbeitszeit':4,'kochzeit':2,'portionen':2,'menueart':'FRÜHSTÜCK','unvertraeglichkeiten':{'id':0,'histamine':false,'fructose':false,'lactose':false},'kalorien':200,'proteine':200,'vegetarisch':false,'vegan':false}]"));
-        verify(rezepteService, Mockito.times(1)).listNormal("NORMAL", "Fleisch", false, false, false, false, false, 0, 1000, 0, 1000);
+        verify(rezepteService, Mockito.times(1)).listNormal("ADMIN", "Fleisch", false, false, false, false, false, 0, 1000, 0, 1000);
     }
 
+    /**
+     * Tests if the method can correctly return 5 recipes.
+     */
     @Test
     public void listMehrFuenf() throws Exception {
         UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
@@ -187,9 +185,11 @@ public class RezepteControllerTests {
         verify(rezepteService, Mockito.times(1)).listNormal("NORMAL", "Fleisch", false, false, false, false, false, 0, 1000, 0, 1000);
     }
 
+    /**
+     * Tests if the method can list 10 recipes with the admin role.
+     */
     @Test
     public void listZehn() throws Exception {
-
         List<Rezepte> test = new ArrayList<>();
         test.add(r);
         test.add(r2);
@@ -213,27 +213,33 @@ public class RezepteControllerTests {
     }
 
 
-
+    /**
+     * Tests if the method can save a recipe correctly
+     */
     @Test
     public void saveRezeptWorks() throws Exception {
         ArrayList<Food> foodsave = new ArrayList<>();
         MockMultipartFile mockMF = new MockMultipartFile("images","image1","image/png","test".getBytes());
-        Rezepte save = new Rezepte("Sandra","Kase",2,4,2,Menueart.MITTAGESSEN,false,
+        Rezepte save = new Rezepte("harry@hacker.de",0,"Kase",2,4,2,Menueart.MITTAGESSEN,false,
                 false,foodsave,uv,"dGVzdA==");
 
-        given(this.rezepteService.saveRezept("Sandra","Käse",2,4,2,
-                Menueart.FRÜHSTÜCK,false,false,false,false,false,"")).willReturn(save);
+        given(this.rezepteService.saveRezept(any(String.class),any(String.class),any(Integer.class),any(Integer.class),any(Integer.class),
+                any(Menueart.class),any(boolean.class),any(boolean.class),any(boolean.class),any(boolean.class),any(boolean.class),any(String.class))).willReturn(save);
 
         this.mvc.perform(multipart("/rest/searchbar/addR/{name}/{az}/{kz}/{p}/{ma}/{iv}/{ivt}/{h}/{l}/{f}",
                 "Kase",2,4,2,Menueart.MITTAGESSEN,false,false,false,false,false)
                 .file("file",mockMF.getBytes())
                 .header("Authorization",this.AUTH_HEADER))
-                .andDo(print());
+                .andDo(print())
+                .andExpect(content().json("{\"id\":0,\"name\":\"Kase\",\"foods\":[],\"arbeitszeit\":2,\"kochzeit\":4,\"portionen\":2,\"menueart\":\"MITTAGESSEN\",\"unvertraeglichkeiten\":{\"id\":0,\"histamine\":false,\"fructose\":false,\"lactose\":false,\"version\":0},\"gesamtzeit\":6,\"kalorien\":0,\"proteine\":0,\"author\":\"harry@hacker.de\",\"image\":\"dGVzdA==\",\"vegetarisch\":false,\"vegan\":false}"));
 
 
-
+        verify(rezepteService,Mockito.times(1)).saveRezept("harry@hacker.de","Kase",2,4,2,Menueart.MITTAGESSEN,false,false,false,false,false,"dGVzdA==");
     }
 
+    /**
+     * Tests if the method can add food to specified recipe.
+     */
     @Test
     public void addFoodToRezeptWorks() throws Exception {
         List<Food> foods = new ArrayList<>();
@@ -249,6 +255,9 @@ public class RezepteControllerTests {
         verify(rezepteService, Mockito.times(1)).addFoodToRezept("Käse", 200, 400, "400G", 15);
     }
 
+    /**
+     * Tests if the method can correctly delete a recipe.
+     */
     @Test
     public void deleteRezeptWorks() throws Exception {
         this.mvc.perform(delete("/rest/searchbar/delete/{id}", 0)
@@ -256,6 +265,10 @@ public class RezepteControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    /**
+     * Tests if the method can correctly delete food from a specified recipe
+     */
     @Test
     public void deleteFoodFromRezeptWorks() throws Exception {
         Rezepte r = new Rezepte("sandra", "Fleisch A", 4, 2, 2, Menueart.FRÜHSTÜCK, false, false, foods, uv);
