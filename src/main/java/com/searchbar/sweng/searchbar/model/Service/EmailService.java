@@ -31,7 +31,7 @@ public class EmailService {
      */
     @Transactional(readOnly=true)
     public void rezeptOfTheDay(String address, String name) {
-        LOGGER.info("Execute rezeptOfTheDay({},{}).",address, name);
+        LOGGER.info("Execute rezeptOfTheDay(address{},name{}).",address, name);
         Rezepte r = rezepteRepository.findFirstByOrderByIdDesc();
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("ht900929@fh-muenster.de");
@@ -42,7 +42,7 @@ public class EmailService {
                 you successfully registered for the best Nutrition App of the World!
                 
                 !!RECIPIE OF THE DAY!!
-                Name: %s
+                Rezeptname: %s
                 Arbeitszeit: %o
                 Kochzeit: %o
                 Gesamtzeit: %o

@@ -1,9 +1,7 @@
 package com.searchbar.sweng.searchbar.inbound;
 
 import com.searchbar.sweng.searchbar.model.Food;
-import com.searchbar.sweng.searchbar.model.Menueart;
 import com.searchbar.sweng.searchbar.model.Rezepte;
-import com.searchbar.sweng.searchbar.model.Unvertraeglichkeiten;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +22,12 @@ public class RezepteTO {
     private int arbeitszeit;
     private int kochzeit;
     private int portionen;
-    private Menueart menueart;
+    private String menueart;
     private boolean isVegan;
     private boolean isVegetarisch;
-    private Unvertraeglichkeiten unvertraeglichkeiten;
+    private boolean fructose;
+    private boolean lactose;
+    private boolean histamine;
     private int gesamtzeit;
     private int kalorien;
     private int proteine;
@@ -36,17 +36,18 @@ public class RezepteTO {
     private String image;
 
     public RezepteTO(Rezepte rezept){
-        System.out.print("Hallo");
         this.name = rezept.getName();
         this.author = rezept.getAuthor();
         this.arbeitszeit = rezept.getArbeitszeit();
         this.kochzeit = rezept.getKochzeit();
         this.portionen = rezept.getPortionen();
-        this.menueart = rezept.getMenueart();
+        this.menueart = rezept.getMenueart().toString();
         this.isVegan = rezept.isVegan();
         this.isVegetarisch = rezept.isVegetarisch();
         this.foods = rezept.getFoods();
-        this.unvertraeglichkeiten = rezept.getUnvertraeglichkeiten();
+        this.fructose = rezept.getUnvertraeglichkeiten().isFructose();
+        this.lactose = rezept.getUnvertraeglichkeiten().isLactose();
+        this.histamine = rezept.getUnvertraeglichkeiten().isHistamine();
         this.gesamtzeit = rezept.getGesamtzeit();
         this.kalorien = rezept.getCalories();
         this.proteine = rezept.getProteins();

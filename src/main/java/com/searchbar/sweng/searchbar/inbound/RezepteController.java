@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 
 @RestController
@@ -75,9 +73,9 @@ public class RezepteController {
         }
 
         List<Rezepte> res = rezepteService.listNormal(role,name, fructose, lactose, histamine, isVegan, isVegetarisch, minK, maxK, minP, maxP);
+
         for (Rezepte r : res) {
-            RezepteTO rto = new RezepteTO(r);
-            results.add(rto);
+           results.add(new RezepteTO(r));
         }
 
         return results;
@@ -127,8 +125,6 @@ public class RezepteController {
 
         Rezepte r =  rezepteService.saveRezept(author,rezeptName, arbeitszeit, kochzeit, portionen, menueart, isVegan, isVegetarisch, h, l, f,image);
 
-        LOGGER.info(r.toString());
-
         return new RezepteTO(r);
     }
 
@@ -146,7 +142,8 @@ public class RezepteController {
     public RezepteTO addFood(@PathVariable("id")int id,@PathVariable("name") String name, @PathVariable("k") int kalorien, @PathVariable("p") int protein,
                              @PathVariable("menge") String menge) {
         LOGGER.info("Received POST-Request /rest/searchbar/{}/addF ).",id);
-        return new RezepteTO(rezepteService.addFoodToRezept(name, kalorien, protein, menge, id));
+        Rezepte r = rezepteService.addFoodToRezept(name, kalorien, protein, menge, id);
+        return new RezepteTO(r);
     }
 
     /**
@@ -171,6 +168,7 @@ public class RezepteController {
     public RezepteTO deleteFoodFromRezept(@PathVariable("rId") int rId,@PathVariable("fId") int fId) {
         LOGGER.info("Received DELETE-Request /rest/searchbar/{}/deleteF/{}} ).",rId,fId);
         Rezepte r =rezepteService.deleteFoodFromRezept(rId,fId);
+
         return new RezepteTO(r);
     }
 }
