@@ -3,7 +3,10 @@ package com.searchbar.sweng.searchbar;
 import com.searchbar.sweng.searchbar.inbound.RezepteController;
 import com.searchbar.sweng.searchbar.inbound.security.JwtValidator;
 import com.searchbar.sweng.searchbar.model.*;
+import com.searchbar.sweng.searchbar.model.Exceptions.NoSuchRecipieException;
+import com.searchbar.sweng.searchbar.model.Exceptions.NotAuthorizedException;
 import com.searchbar.sweng.searchbar.model.Service.RezepteService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -319,5 +322,24 @@ public class RezepteControllerTests {
                 .andExpect(status().isOk());
         Mockito.verify(rezepteService,Mockito.times(1)).deleteFoodFromRezept(0,0);
 
+    }
+    /**
+     * Tests if the method returns the riht statuscode 403forbidden.
+     */
+    @Test
+    public void throwsNotAuthorizedException() throws Exception{
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(TEST_USER_EMAIL)
+                .password("***")
+                .authorities(Role.NORMAL.getAuthority())
+                .build();
+        given(jwtValidator.isValidJWT(any(String.class))).willReturn(true);
+        given(jwtValidator.getUserEmail(any(String.class))).willReturn(TEST_USER_EMAIL);
+        given(jwtValidator.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
+        given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
+
+
+            this.mvc.perform(delete("/rest/searchbar/{rId}/deleteF/{fId}",0,0)
+                    .header("Authorization", this.AUTH_HEADER))
+                    .andExpect(status().isForbidden());
     }
 }

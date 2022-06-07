@@ -1,6 +1,7 @@
 package com.searchbar.sweng.searchbar;
 
 import com.searchbar.sweng.searchbar.model.Event.EventPublisher;
+import com.searchbar.sweng.searchbar.model.Exceptions.MessageNotSendException;
 import com.searchbar.sweng.searchbar.model.Exceptions.NoSuchRecipieException;
 import com.searchbar.sweng.searchbar.model.Repositories.FoodRepository;
 import com.searchbar.sweng.searchbar.model.Service.RezepteService;
@@ -254,5 +255,17 @@ public class RezepteServiceTests {
         assertThat(test.getFoods().size(), is(1));
         assertThat(test.getFoods().get(0).getName(), is("Kalorien Mittel"));
         assertThat(test.getFoods().get(0).getId(), is(2));
+    }
+
+    /**
+     * Tests if the exception is thrown and if it is the correct exception.
+     */
+    @Test
+    public void saveRezeptException() {
+        given(this.eventPublisher.publishEvent(ArgumentMatchers.any())).willReturn(false);
+        Assertions.assertThrows(MessageNotSendException.class,() -> {
+            this.rezepteService.saveRezept("Sandra", "test", 2, 4, 2, Menueart.FRÜHSTÜCK, false, false, false, false, false, "");
+        });
+
     }
 }
