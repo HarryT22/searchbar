@@ -11,8 +11,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 public class RezeptAddedEvent {
     private int id;
