@@ -324,7 +324,7 @@ public class RezepteControllerTests {
 
     }
     /**
-     * Tests if the method returns the riht statuscode 403forbidden.
+     * Tests if the method returns the right statuscode 403 Forbidden.
      */
     @Test
     public void throwsNotAuthorizedException() throws Exception{
