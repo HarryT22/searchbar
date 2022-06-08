@@ -111,6 +111,7 @@ public class RezepteController {
         String image ="";
 
         if (file.getOriginalFilename() != null) {
+            LOGGER.info(file.getOriginalFilename());
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             if (fileName.contains("..")) {
                 LOGGER.info("Not a valid filename.");

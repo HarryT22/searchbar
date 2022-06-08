@@ -68,6 +68,8 @@ public class PersistenceTest {
         LOGGER.info(r.getName() + r.getId());
         assertEquals("Fleisch F",r.getName());
         assertEquals(6,r.getId());
+        assertEquals(0,r.getVersion());
+
     }
 
     /**
@@ -123,6 +125,8 @@ public class PersistenceTest {
         Optional<User> result = userRepository.findByEmail("pablo@fhms.de");
         User u = result.get();
         assertEquals("pablo@fhms.de",u.getEmail());
+        assertEquals(0,u.getVersion());
+        assertEquals(1,u.getId());
         Optional<User> result2 = userRepository.findByEmail("benne@fhms.de");
         assertTrue(result2.isEmpty());
     }
