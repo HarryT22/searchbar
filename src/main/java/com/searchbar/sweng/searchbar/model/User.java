@@ -9,7 +9,6 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 public class User {
