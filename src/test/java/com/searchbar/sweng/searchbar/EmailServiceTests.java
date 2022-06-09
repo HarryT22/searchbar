@@ -13,10 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
@@ -48,6 +45,9 @@ public class EmailServiceTests {
         this.vegan = new Rezepte("A",1,"A Vegan",2,4,2, Menueart.FRÜHSTÜCK,false,true,empty,neutral);
     }
 
+    /**
+     * Tests that the rezeptOfTheDay Method creates the right E-Mail.
+     */
     @Test
     public void rezeptOfTheDayWorks(){
         given(rezepteRepository.findFirstByOrderByIdDesc()).willReturn(vegan);

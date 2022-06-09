@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.binder.test.OutputDestination;
 import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 
@@ -33,10 +32,9 @@ public class EventPublisherTests {
     private EventPublisher eventPublisher;
 
 
-/**
+    /**
      * Tests if the published event is sent and if the data is correct.
      */
-
 
     @Test
     void testPublishRezeptAddedEvent() throws Exception {

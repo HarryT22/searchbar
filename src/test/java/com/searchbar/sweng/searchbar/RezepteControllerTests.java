@@ -3,10 +3,7 @@ package com.searchbar.sweng.searchbar;
 import com.searchbar.sweng.searchbar.inbound.RezepteController;
 import com.searchbar.sweng.searchbar.inbound.security.JwtValidator;
 import com.searchbar.sweng.searchbar.model.*;
-import com.searchbar.sweng.searchbar.model.Exceptions.NoSuchRecipieException;
-import com.searchbar.sweng.searchbar.model.Exceptions.NotAuthorizedException;
 import com.searchbar.sweng.searchbar.model.Service.RezepteService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -286,7 +283,7 @@ public class RezepteControllerTests {
         foods.add(new Food("Käse", 200, 400, "400G"));
         r15 = new Rezepte("Sandra", 0, "Fleisch I", 2, 4, 2, Menueart.FRÜHSTÜCK, false, false, foods, uv);
         given(this.rezepteService.addFoodToRezept("Käse", 200, 400, "400G", 15)).willReturn(r15);
-        this.mvc.perform(post("/rest/searchbar/{id}/addF/{name}/{k}/{p}/{menge}", 15, "Käse", 200, 400, "400G")
+        this.mvc.perform(post("/rest/searchbar/addF/{id}/{name}/{k}/{p}/{menge}", 15, "Käse", 200, 400, "400G")
                         .header("Authorization", this.AUTH_HEADER))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -316,7 +313,7 @@ public class RezepteControllerTests {
         LOG.info(r.getName());
         LOG.info(""+r.getFoods().get(0).getId());
         LOG.info(""+r.getFoods().get(0).getName());
-        this.mvc.perform(delete("/rest/searchbar/{rId}/deleteF/{fId}",0,0)
+        this.mvc.perform(delete("/rest/searchbar/deleteF/{rId}/{fId}",0,0)
                 .header("Authorization", this.AUTH_HEADER))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -338,7 +335,7 @@ public class RezepteControllerTests {
         given(jwtValidator.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
 
 
-            this.mvc.perform(delete("/rest/searchbar/{rId}/deleteF/{fId}",0,0)
+            this.mvc.perform(delete("/rest/searchbar/deleteF/{rId}/{fId}",0,0)
                     .header("Authorization", this.AUTH_HEADER))
                     .andExpect(status().isForbidden());
     }
