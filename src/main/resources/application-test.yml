@@ -20,11 +20,11 @@ spring:
                 port: 5672
                 username: admin
                 password: password
-                virtual-host: harrytest
+                virtual-host: /
 
   #repeat the rabbitmq credentials as follows when actuator health checks are active:
   rabbitmq:
     host: rabbitmq.team12.svc.cluster.local
     username: admin
     password: password
-    virtual-host: harrytest
+    virtual-host: /
