@@ -254,23 +254,23 @@ public class RezepteControllerTests {
      */
     @Test
     public void saveRezeptWorks() throws Exception {
+
         ArrayList<Food> foodsave = new ArrayList<>();
-        MockMultipartFile mockMF = new MockMultipartFile("images","image1","image/png","test".getBytes());
         Rezepte save = new Rezepte("harry@hacker.de",0,"Kase",2,4,2,Menueart.MITTAGESSEN,false,
                 false,foodsave,uv,"dGVzdA==");
 
         given(this.rezepteService.saveRezept(any(String.class),any(String.class),any(Integer.class),any(Integer.class),any(Integer.class),
                 any(Menueart.class),any(boolean.class),any(boolean.class),any(boolean.class),any(boolean.class),any(boolean.class),any(String.class))).willReturn(save);
 
-        this.mvc.perform(multipart("/rest/searchbar/addR/{name}/{az}/{kz}/{p}/{ma}/{iv}/{ivt}/{h}/{l}/{f}",
+        this.mvc.perform(post("/rest/searchbar/addR/{name}/{az}/{kz}/{p}/{ma}/{iv}/{ivt}/{h}/{l}/{f}",
                 "Kase",2,4,2,Menueart.MITTAGESSEN,false,false,false,false,false)
-                .file("file",mockMF.getBytes())
+                        .content("ss")
                 .header("Authorization",this.AUTH_HEADER))
                 .andDo(print())
                 .andExpect(content().json("{\"id\":0,\"name\":\"Kase\",\"foods\":[],\"arbeitszeit\":2,\"kochzeit\":4,\"portionen\":2,\"menueart\":\"MITTAGESSEN\",\"fructose\":false,\"lactose\":false,\"histamine\":false,\"gesamtzeit\":6,\"kalorien\":0,\"proteine\":0,\"author\":\"harry@hacker.de\",\"image\":\"dGVzdA==\",\"vegan\":false,\"vegetarisch\":false}"));
 
 
-        verify(rezepteService,Mockito.times(1)).saveRezept("harry@hacker.de","Kase",2,4,2,Menueart.MITTAGESSEN,false,false,false,false,false,"dGVzdA==");
+        verify(rezepteService,Mockito.times(1)).saveRezept("harry@hacker.de","Kase",2,4,2,Menueart.MITTAGESSEN,false,false,false,false,false,"ss");
     }
 
     /**

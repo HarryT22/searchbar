@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -104,27 +105,13 @@ public class RezepteController {
                                 @PathVariable("p") int portionen, @PathVariable("ma") Menueart menueart,
                                 @PathVariable("iv") boolean isVegan, @PathVariable("ivt") boolean isVegetarisch,
                                 @PathVariable("h") boolean h, @PathVariable("l") boolean l, @PathVariable("f") boolean f,
-                                @RequestParam("file") MultipartFile file) {
+                                @RequestBody String file) {
 
         LOGGER.info("Received POST-Request /rest/searchbar/addR with parameter {},{},{},{},{},{},{},{},{},{}).",rezeptName,arbeitszeit,kochzeit,portionen,menueart,isVegan,isVegetarisch,h,l,f);
+
         String author = jwtValidator.getUserEmail(Authorization.substring(7));
-        String image ="";
 
-        if (file.getOriginalFilename() != null) {
-            LOGGER.info(file.getOriginalFilename());
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            if (fileName.contains("..")) {
-                LOGGER.info("Not a valid filename.");
-                throw new NonValidFileException("Not a valid file");
-            }
-            try {
-                image = Base64.getEncoder().encodeToString(file.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Rezepte r =  rezepteService.saveRezept(author,rezeptName, arbeitszeit, kochzeit, portionen, menueart, isVegan, isVegetarisch, h, l, f,image);
+        Rezepte r =  rezepteService.saveRezept(author,rezeptName, arbeitszeit, kochzeit, portionen, menueart, isVegan, isVegetarisch, h, l, f,file);
 
         return new RezepteTO(r);
     }
