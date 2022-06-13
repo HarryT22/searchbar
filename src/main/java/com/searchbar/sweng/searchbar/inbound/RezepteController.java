@@ -102,7 +102,7 @@ public class RezepteController {
     @PostMapping("/addR/{name}/{az}/{kz}/{p}/{ma}/{iv}/{ivt}/{h}/{l}/{f}")
     public RezepteTO saveRezept(@RequestHeader String Authorization,@PathVariable("name") String rezeptName,
                                 @PathVariable("az") int arbeitszeit,@PathVariable("kz") int kochzeit,
-                                @PathVariable("p") int portionen, @PathVariable("ma") Menueart menueart,
+                                @PathVariable("p") int portionen, @PathVariable("ma") String menueart,
                                 @PathVariable("iv") boolean isVegan, @PathVariable("ivt") boolean isVegetarisch,
                                 @PathVariable("h") boolean h, @PathVariable("l") boolean l, @PathVariable("f") boolean f,
                                 @RequestBody String file) {
@@ -110,8 +110,12 @@ public class RezepteController {
         LOGGER.info("Received POST-Request /rest/searchbar/addR with parameter {},{},{},{},{},{},{},{},{},{}).",rezeptName,arbeitszeit,kochzeit,portionen,menueart,isVegan,isVegetarisch,h,l,f);
 
         String author = jwtValidator.getUserEmail(Authorization.substring(7));
-
-        Rezepte r =  rezepteService.saveRezept(author,rezeptName, arbeitszeit, kochzeit, portionen, menueart, isVegan, isVegetarisch, h, l, f,file);
+        Menueart m = switch (menueart) {
+            case "MITTAGESSEN" -> Menueart.MITTAGESSEN;
+            case "ABENDESSEN" -> Menueart.ABENDESSEN;
+            default -> Menueart.FRÜHSTÜCK;
+        };
+        Rezepte r =  rezepteService.saveRezept(author,rezeptName, arbeitszeit, kochzeit, portionen, m, isVegan, isVegetarisch, h, l, f,file);
 
         return new RezepteTO(r);
     }
