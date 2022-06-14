@@ -149,7 +149,7 @@ public class RezepteService {
      * @param file image of the recipie
      * @return the recipe construct
      */
-    @Transactional(rollbackFor = MessageNotSendException.class)
+    @Transactional
     public Rezepte saveRezept(String author,String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
                            boolean isVegan, boolean isVegetarisch, boolean h, boolean l, boolean f, String file) {
         LOG.info("Execute saveRezept for {}",rezeptName);
@@ -168,6 +168,7 @@ public class RezepteService {
         r.setFoods(list);
         r.setImage(file);
         LOG.info("Successfully added recipe {} ID IS {}.",rezeptName,r.getId());
+        rezepteRepository.save(r);
         var event = new RezeptAddedEvent(r);
         var published = this.eventPublisher.publishEvent(event);
         if(!published){
