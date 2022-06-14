@@ -15,12 +15,12 @@ INSERT INTO food(name,proteine,kalorien,menge,version) VALUES ('Oktopus',200,400
 INSERT INTO food(name,proteine,kalorien,menge,version) VALUES ('Reis',200,400,'200 g',0);
 INSERT INTO food(name,proteine,kalorien,menge,version) VALUES ('Kartoffel',200,400,'200 g',0);
 
-INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Test Fleisch A',25,15,6,'MITTAGESSEN',FALSE,FALSE,1,0);
-INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Test Fleisch B',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
-INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Test Fleisch C',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
-INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Test Fleisch D',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
-INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Test Fleisch E',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
-INSERT INTO rezepte(author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES ('Sanra','Test Fleisch F',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(id,author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES (1,'Sanra','Test Fleisch A',25,15,6,'MITTAGESSEN',FALSE,FALSE,1,0);
+INSERT INTO rezepte(id,author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES (2,'Sanra','Test Fleisch B',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(id,author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES (3,'Sanra','Test Fleisch C',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(id,author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES (4,'Sanra','Test Fleisch D',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(id,author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES (5,'Sanra','Test Fleisch E',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
+INSERT INTO rezepte(id,author,name,arbeitszeit,kochzeit,portionen,menueart,is_vegan,is_vegetarisch,unvertraeglichkeiten_id,version) VALUES (6,'Sanra','Test Fleisch F',25,15,6,'MITTAGESSEN',FALSE,FALSE,2,0);
 
 INSERT INTO rezepte_foods(rezepte_id,food_id) VALUES (1,1);
 INSERT INTO rezepte_foods(rezepte_id,food_id) VALUES (2,2);
