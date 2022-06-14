@@ -186,6 +186,7 @@ public class RezepteService {
             fl.add(f);
             r.setFoods(fl);
             LOG.info("Successfully added foods.");
+            rezepteRepository.save(r);
             return r;
         } else {
             LOG.info("Recipie with id {} does not exist.",id);
@@ -213,6 +214,7 @@ public class RezepteService {
             fl.remove(f.get());
             r .setFoods(fl);
             LOG.info("Successfully deleted foods.");
+            rezepteRepository.save(r);
             return r;
         } else {
             LOG.info("Recipe with id {} does not exist.",rId);
