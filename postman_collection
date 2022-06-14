@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "ae29fc9e-3759-4131-bbc5-4b72ffc7d4c8",
 		"name": "Searchbar Collection",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "20396792"
 	},
 	"item": [
@@ -34,7 +34,20 @@
 						}
 					}
 				},
-				"url": "http://test-sweng-sweng-team12-registrationmicroservice.wi-k8s.fh-muenster.de/rest/login"
+				"url": {
+					"raw": "http://test-sweng-sweng-team12-registrationmicroservice.wi-k8s.fh-muenster.de/rest/login",
+					"protocol": "http",
+					"host": [
+						"test-sweng-sweng-team12-registrationmicroservice",
+						"wi-k8s",
+						"fh-muenster",
+						"de"
+					],
+					"path": [
+						"rest",
+						"login"
+					]
+				}
 			},
 			"response": []
 		},
@@ -66,7 +79,20 @@
 						}
 					}
 				},
-				"url": "http://test-sweng-sweng-team12-registrationmicroservice.wi-k8s.fh-muenster.de/rest/login"
+				"url": {
+					"raw": "http://test-sweng-sweng-team12-registrationmicroservice.wi-k8s.fh-muenster.de/rest/login",
+					"protocol": "http",
+					"host": [
+						"test-sweng-sweng-team12-registrationmicroservice",
+						"wi-k8s",
+						"fh-muenster",
+						"de"
+					],
+					"path": [
+						"rest",
+						"login"
+					]
+				}
 			},
 			"response": []
 		},
@@ -159,7 +185,30 @@
 						"type": "text"
 					}
 				],
-				"url": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/Fleisch/false/false/false/false/false/0/1000/0/1000"
+				"url": {
+					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/Fleisch/false/false/false/false/false/0/1000/0/1000",
+					"protocol": "http",
+					"host": [
+						"test-sweng-sweng-team12-nutriapp-searchbar",
+						"wi-k8s",
+						"fh-muenster",
+						"de"
+					],
+					"path": [
+						"rest",
+						"searchbar",
+						"Fleisch",
+						"false",
+						"false",
+						"false",
+						"false",
+						"false",
+						"0",
+						"1000",
+						"0",
+						"1000"
+					]
+				}
 			},
 			"response": []
 		},
@@ -264,7 +313,30 @@
 						"type": "text"
 					}
 				],
-				"url": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/Fleisch/false/false/false/false/false/0/1000/0/1000"
+				"url": {
+					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/Fleisch/false/false/false/false/false/0/1000/0/1000",
+					"protocol": "http",
+					"host": [
+						"test-sweng-sweng-team12-nutriapp-searchbar",
+						"wi-k8s",
+						"fh-muenster",
+						"de"
+					],
+					"path": [
+						"rest",
+						"searchbar",
+						"Fleisch",
+						"false",
+						"false",
+						"false",
+						"false",
+						"false",
+						"0",
+						"1000",
+						"0",
+						"1000"
+					]
+				}
 			},
 			"response": []
 		},
@@ -317,7 +389,31 @@
 						}
 					}
 				},
-				"url": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/addR/Fleisch A/2/4/2/MITTAGESSEN/false/false/false/false/false"
+				"url": {
+					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/addR/Fleisch A/2/4/2/MITTAGESSEN/false/false/false/false/false",
+					"protocol": "http",
+					"host": [
+						"test-sweng-sweng-team12-nutriapp-searchbar",
+						"wi-k8s",
+						"fh-muenster",
+						"de"
+					],
+					"path": [
+						"rest",
+						"searchbar",
+						"addR",
+						"Fleisch A",
+						"2",
+						"4",
+						"2",
+						"MITTAGESSEN",
+						"false",
+						"false",
+						"false",
+						"false",
+						"false"
+					]
+				}
 			},
 			"response": []
 		},
@@ -376,7 +472,26 @@
 						"type": "text"
 					}
 				],
-				"url": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/addF/2/GKOHL/200/200/40Gramm"
+				"url": {
+					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/addF/2/GKOHL/200/200/40Gramm",
+					"protocol": "http",
+					"host": [
+						"test-sweng-sweng-team12-nutriapp-searchbar",
+						"wi-k8s",
+						"fh-muenster",
+						"de"
+					],
+					"path": [
+						"rest",
+						"searchbar",
+						"addF",
+						"2",
+						"GKOHL",
+						"200",
+						"200",
+						"40Gramm"
+					]
+				}
 			},
 			"response": []
 		},
@@ -420,7 +535,23 @@
 						"type": "text"
 					}
 				],
-				"url": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/deleteF/2/8"
+				"url": {
+					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/deleteF/2/8",
+					"protocol": "http",
+					"host": [
+						"test-sweng-sweng-team12-nutriapp-searchbar",
+						"wi-k8s",
+						"fh-muenster",
+						"de"
+					],
+					"path": [
+						"rest",
+						"searchbar",
+						"deleteF",
+						"2",
+						"8"
+					]
+				}
 			},
 			"response": []
 		},
@@ -448,7 +579,22 @@
 						"type": "text"
 					}
 				],
-				"url": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/delete/100"
+				"url": {
+					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/delete/100",
+					"protocol": "http",
+					"host": [
+						"test-sweng-sweng-team12-nutriapp-searchbar",
+						"wi-k8s",
+						"fh-muenster",
+						"de"
+					],
+					"path": [
+						"rest",
+						"searchbar",
+						"delete",
+						"100"
+					]
+				}
 			},
 			"response": []
 		}
