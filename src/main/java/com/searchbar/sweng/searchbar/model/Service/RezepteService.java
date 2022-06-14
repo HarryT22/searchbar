@@ -149,7 +149,7 @@ public class RezepteService {
      * @param file image of the recipie
      * @return the recipe construct
      */
-    @Transactional(rollbackFor = MessageNotSendException.class)
+    @Transactional
     public Rezepte saveRezept(String author,String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
                            boolean isVegan, boolean isVegetarisch, boolean h, boolean l, boolean f, String file) {
         LOG.info("Execute saveRezept for {}",rezeptName);
