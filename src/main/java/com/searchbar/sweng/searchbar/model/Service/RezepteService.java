@@ -149,7 +149,7 @@ public class RezepteService {
      * @param file image of the recipie
      * @return the recipe construct
      */
-    @Transactional
+    @Transactional(rollbackFor = MessageNotSendException.class)
     public Rezepte saveRezept(String author,String rezeptName, int arbeitszeit, int kochzeit, int portionen, Menueart menueart,
                            boolean isVegan, boolean isVegetarisch, boolean h, boolean l, boolean f, String file) {
         LOG.info("Execute saveRezept for {}",rezeptName);
@@ -175,7 +175,7 @@ public class RezepteService {
      * @param id id of the recipe the food is getting added to
      * @return the updated recipe
      */
-    @Transactional
+    @Transactional(rollbackFor = NoSuchRecipieException.class)
     public Rezepte addFoodToRezept(String name, int proteine, int kalorien, String menge, int id) {
         LOG.info("Execute addFoodToRezept with parameters {},{},{},{},{}.",name,proteine,kalorien,menge,id);
         Food f = new Food(name, proteine, kalorien, menge);
@@ -200,7 +200,7 @@ public class RezepteService {
      * @param fId ID of the food item that is going to be deleted
      * @return the updated recipe
      */
-    @Transactional
+    @Transactional(rollbackFor= ResourceNotFoundException.class)
     public Rezepte deleteFoodFromRezept(int rId,int fId) {
         LOG.info("Execute deleteFoodFromRezept with parameters rId{} fId{}.",rId,fId);
         Optional<Rezepte> rOptional = rezepteRepository.findById(rId);
@@ -214,7 +214,6 @@ public class RezepteService {
             fl.remove(f.get());
             r .setFoods(fl);
             LOG.info("Successfully deleted foods.");
-            rezepteRepository.save(r);
             return r;
         } else {
             LOG.info("Recipe with id {} does not exist.",rId);
@@ -226,7 +225,7 @@ public class RezepteService {
      * Delete a recipe from the database.
      * @param id ID of the recipe that is supposed to be deleted.
      */
-    @Transactional
+    @Transactional(rollbackFor = NoSuchRecipieException.class)
     public void deleteRezept(int id) {
         LOG.info("Execute deleteRezept({}).", id);
         Optional<Rezepte> rezepteOptional = rezepteRepository.findById(id);
