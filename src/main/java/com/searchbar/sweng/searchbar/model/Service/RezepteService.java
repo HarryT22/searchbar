@@ -155,7 +155,18 @@ public class RezepteService {
         LOG.info("Execute saveRezept for {}",rezeptName);
         ArrayList<Food> list = new ArrayList<>();
         Unvertraeglichkeiten uv = new Unvertraeglichkeiten(h,f,l);
-        Rezepte r = new Rezepte(author,rezeptName,arbeitszeit,kochzeit,portionen,menueart,isVegan,isVegetarisch,list,uv,file);
+        Rezepte r = new Rezepte();
+        r.setAuthor(author);
+        r.setName(rezeptName);
+        r.setArbeitszeit(arbeitszeit);
+        r.setKochzeit(kochzeit);
+        r.setPortionen(portionen);
+        r.setMenueart(menueart);
+        r.setVegan(isVegan);
+        r.setVegetarisch(isVegetarisch);
+        r.setUnvertraeglichkeiten(uv);
+        r.setFoods(list);
+        r.setImage(file);
         LOG.info("Successfully added recipe {} ID IS {}.",rezeptName,r.getId());
         var event = new RezeptAddedEvent(r);
         var published = this.eventPublisher.publishEvent(event);
@@ -186,7 +197,6 @@ public class RezepteService {
             fl.add(f);
             r.setFoods(fl);
             LOG.info("Successfully added foods.");
-            rezepteRepository.save(r);
             return r;
         } else {
             LOG.info("Recipie with id {} does not exist.",id);

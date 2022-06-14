@@ -15,7 +15,7 @@ public class Rezepte {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rezepte_id", updatable = false, nullable = false)
+    @Column(name = "rezepte_id", nullable = false)
     private int id;
     private String name;
     @ManyToMany(cascade = CascadeType.ALL)
