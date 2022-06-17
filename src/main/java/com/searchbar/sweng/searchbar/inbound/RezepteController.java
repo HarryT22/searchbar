@@ -131,7 +131,7 @@ public class RezepteController {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/addF/{id}/{name}/{k}/{p}/{menge}")
-    public RezepteTO addFood(@PathVariable("id")int id,@PathVariable("name") String name, @PathVariable("k") int kalorien, @PathVariable("p") int protein,
+    public RezepteTO addFood(@RequestHeader String Authorization, @PathVariable("id")int id,@PathVariable("name") String name, @PathVariable("k") int kalorien, @PathVariable("p") int protein,
                              @PathVariable("menge") String menge) {
         LOGGER.info("Received POST-Request /rest/searchbar/addF/{} ).",id);
         Rezepte r = rezepteService.addFoodToRezept(name, kalorien, protein, menge, id);
@@ -144,7 +144,7 @@ public class RezepteController {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/delete/{id}")
-    public void deleteRezept(@PathVariable("id") int id) {
+    public void deleteRezept(@RequestHeader String Authorization,@PathVariable("id") int id) {
         LOGGER.info("Received DELETE-Request /rest/searchbar/delete/{} ).",id);
         rezepteService.deleteRezept(id);
     }
@@ -157,7 +157,7 @@ public class RezepteController {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/deleteF/{rId}/{fId}")
-    public RezepteTO deleteFoodFromRezept(@PathVariable("rId") int rId,@PathVariable("fId") int fId) {
+    public RezepteTO deleteFoodFromRezept(@RequestHeader String Authorization,@PathVariable("rId") int rId,@PathVariable("fId") int fId) {
         LOGGER.info("Received DELETE-Request /rest/searchbar/deleteF/{}/{} ).",rId,fId);
         Rezepte r =rezepteService.deleteFoodFromRezept(rId,fId);
 
