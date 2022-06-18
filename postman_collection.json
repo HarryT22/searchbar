@@ -59,7 +59,7 @@
 					"script": {
 						"exec": [
 							"pm.collectionVariables.set(\"tokenA\", pm.response.text());\r",
-							"pm.test(\"Status test\", function() {\r",
+							"pm.test(\"Status test ADMIN\", function() {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    });"
 						],
@@ -103,10 +103,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status test\", function() {\r",
+							"pm.test(\"Status test listNormal\", function() {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    });\r",
-							"pm.test(\"Data\",function () {\r",
+							"pm.test(\"Data listNormal\",function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData[0]).have.property('name','Test Fleisch A')\r",
 							"    pm.expect(jsonData[0]).have.property('arbeitszeit',25);\r",
@@ -203,10 +203,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status test\", function() {\r",
+							"pm.test(\"Status test listNormalADMIN\", function() {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    });\r",
-							"pm.test(\"Data\",function () {\r",
+							"pm.test(\"Data listNormalADMIN\",function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData[0]).have.property('name','Test Fleisch A')\r",
 							"    pm.expect(jsonData[0]).have.property('arbeitszeit',25);\r",
@@ -314,12 +314,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status test\", function() {\r",
+							"pm.test(\"Status test save rezept\", function() {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    });\r",
-							"pm.test(\"Data\",function () {\r",
+							"pm.test(\"Data save rezept\",function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).have.property('name','Fleisch A');\r",
+							"    pm.expect(jsonData).have.property(\"name\",'Fleisch A');\r",
 							"    pm.expect(jsonData).have.property('arbeitszeit',2);\r",
 							"    pm.expect(jsonData).have.property('kochzeit',4);\r",
 							"    pm.expect(jsonData).have.property('portionen',2);\r",
@@ -399,10 +399,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status test\", function() {\r",
+							"pm.test(\"Status test addFood\", function() {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    });\r",
-							"pm.test(\"Data\",function () {\r",
+							"pm.test(\"Data addFood\",function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).have.property('name','Test Fleisch B')\r",
 							"    pm.expect(jsonData).have.property('arbeitszeit',25);\r",
@@ -466,10 +466,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status test\", function() {\r",
+							"pm.test(\"Status test delteFoodFromRezept\", function() {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    });\r",
-							"pm.test(\"Data\",function () {\r",
+							"pm.test(\"Data dffr\",function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).have.property('name','Test Fleisch B')\r",
 							"    pm.expect(jsonData).have.property('arbeitszeit',25);\r",
@@ -525,7 +525,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status test\", function() {\r",
+							"pm.test(\"Status test dR\", function() {\r",
 							"    pm.response.to.have.status(404);\r",
 							"    });"
 						],
