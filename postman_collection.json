@@ -330,7 +330,7 @@
 							"    pm.expect(jsonData).have.property('vegan',false);\r",
 							"    pm.expect(jsonData).have.property('vegetarisch',false);\r",
 							"    pm.expect(jsonData).have.property('author','Admin@web.de');\r",
-							"    pm.response.to.have.jsonBody('image','{\\r\\n    \\\"file\\\":\\\"wqeqweqweqwrqwrqwr\\\"\\r\\n}');\r",
+							"    pm.response.to.have.jsonBody('image','weqwe');\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -348,7 +348,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"file\":\"wqeqweqweqwrqwrqwr\"\r\n}",
+					"raw": "weqwe",
 					"options": {
 						"raw": {
 							"language": "json"
