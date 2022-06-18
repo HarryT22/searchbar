@@ -319,7 +319,7 @@
 							"    });\r",
 							"pm.test(\"Data save rezept\",function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).have.property(\"name\",'Fleisch A');\r",
+							"    pm.expect(jsonData).to.have.property('name','FleischA')\r",
 							"    pm.expect(jsonData).have.property('arbeitszeit',2);\r",
 							"    pm.expect(jsonData).have.property('kochzeit',4);\r",
 							"    pm.expect(jsonData).have.property('portionen',2);\r",
@@ -356,7 +356,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/addR/Fleisch A/2/4/2/MITTAGESSEN/false/false/false/false/false",
+					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/addR/FleischA/2/4/2/MITTAGESSEN/false/false/false/false/false",
 					"protocol": "http",
 					"host": [
 						"test-sweng-sweng-team12-nutriapp-searchbar",
@@ -368,7 +368,7 @@
 						"rest",
 						"searchbar",
 						"addR",
-						"Fleisch A",
+						"FleischA",
 						"2",
 						"4",
 						"2",
