@@ -168,7 +168,6 @@ public class RezepteService {
         r.setFoods(list);
         r.setImage(file);
         LOG.info("Successfully added recipe {} ID IS {}.",rezeptName,r.getId());
-        rezepteRepository.save(r);
         var event = new RezeptAddedEvent(r);
         var published = this.eventPublisher.publishEvent(event);
         if(!published){
