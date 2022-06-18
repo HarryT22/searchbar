@@ -314,12 +314,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status test save rezept\", function() {\r",
+							"pm.test(\"Status test save rezept\",function() {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    });\r",
 							"pm.test(\"Data save rezept\",function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.property('name','FleischA')\r",
+							"    pm.expect(jsonData).have.property('name','FleischA')\r",
 							"    pm.expect(jsonData).have.property('arbeitszeit',2);\r",
 							"    pm.expect(jsonData).have.property('kochzeit',4);\r",
 							"    pm.expect(jsonData).have.property('portionen',2);\r",
@@ -543,7 +543,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/delete/101",
+					"raw": "http://test-sweng-sweng-team12-nutriapp-searchbar.wi-k8s.fh-muenster.de/rest/searchbar/delete/104",
 					"protocol": "http",
 					"host": [
 						"test-sweng-sweng-team12-nutriapp-searchbar",
@@ -555,7 +555,7 @@
 						"rest",
 						"searchbar",
 						"delete",
-						"101"
+						"104"
 					]
 				}
 			},
