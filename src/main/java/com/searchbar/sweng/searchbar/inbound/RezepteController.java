@@ -155,6 +155,7 @@ public class RezepteController {
      * @param fId the ID of the food that is supposed to be deleted from the list.
      * @return new RezepteTO with the new Foods-List
      */
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/deleteF/{rId}/{fId}")
     public RezepteTO deleteFoodFromRezept(@RequestHeader String Authorization,@PathVariable("rId") int rId,@PathVariable("fId") int fId) {

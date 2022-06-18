@@ -236,6 +236,7 @@ public class RezepteService {
      * Delete a recipe from the database.
      * @param id ID of the recipe that is supposed to be deleted.
      */
+    @Transactional(rollbackFor = NoSuchRecipieException.class)
     public void deleteRezept(int id) {
         LOG.info("Execute deleteRezept({}).", id);
         Optional<Rezepte> rezepteOptional = rezepteRepository.findById(id);
