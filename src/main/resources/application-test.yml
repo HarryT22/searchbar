@@ -5,7 +5,7 @@ spring:
       source: eventPublisher
       bindings:
         eventPublisher-out-1:
-          destination: rezepte.channel.test
+          destination: amq.direct.test
           binder: cloud_rabbit
         eventConsumer-in-0:
           destination: amq.topic.test
