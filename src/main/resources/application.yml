@@ -5,10 +5,10 @@ spring:
       source: eventPublisher
       bindings:
         eventPublisher-out-1:
-          destination: amq.direct
+          destination: rezepte.sweng
           binder: cloud_rabbit
         eventConsumer-in-0:
-          destination: amq.topic
+          destination: register.sweng
           binder: cloud_rabbit
       binders:
         cloud_rabbit:
@@ -16,16 +16,16 @@ spring:
           environment:
             spring:
               rabbitmq:
-                host: rabbitmq.team12.svc.cluster.local
+                host: rat.rmq2.cloudamqp.com
                 port: 5672
-                username: admin
-                password: password
-                virtual-host: /
+                username: ggdnciei
+                password: sRTIifxJVr2UxTH5VE1aPiYm0KHMDXMG
+                virtual-host: ggdnciei
 
   #repeat the rabbitmq credentials as follows when actuator health checks are active:
   rabbitmq:
-    host: rabbitmq.team12.svc.cluster.local
+    host: rat.rmq2.cloudamqp.com
     port: 5672
-    username: admin
-    password: password
-    virtual-host: /
+    username: ggdnciei
+    password: sRTIifxJVr2UxTH5VE1aPiYm0KHMDXMG
+    virtual-host: ggdnciei

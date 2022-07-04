@@ -34,7 +34,7 @@ public class EmailService {
         LOGGER.info("Execute rezeptOfTheDay(address{},name{}).",address, name);
         Rezepte r = rezepteRepository.findFirstByOrderByIdDesc();
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("ht900929@fh-muenster.de");
+        message.setTo("harry.thuente@gmx.net");
         message.setSubject("Welcome to the NutriApp!");
         message.setText(String.format("""
                 Dear %s,
